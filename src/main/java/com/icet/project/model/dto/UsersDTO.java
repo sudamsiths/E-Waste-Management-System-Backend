@@ -1,5 +1,6 @@
 package com.icet.project.model.dto;
 
+import com.icet.project.utill.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class CustomerDTO {
+public class UsersDTO {
     private Long userId;
     private String fullName;
     private String contactNo;
@@ -18,4 +19,5 @@ public class CustomerDTO {
     private String password;
     private String email;
     private String confirmPassword;
+    private Role role;
 }
