@@ -1,5 +1,6 @@
 package com.icet.project.model.entity;
 
+import com.icet.project.utill.category;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,14 +18,14 @@ public class Garbage_DetailsEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private Long id;
     private String title;
-    private String category;
+    @Enumerated(EnumType.STRING)
+    private category category;
     @Lob
     @Column(columnDefinition = "LONGBLOB")
     private byte[] image;
-    private Double price;
+    private Double points;
     private String location;
     private Double weight;
     private String description;
-
 
 }

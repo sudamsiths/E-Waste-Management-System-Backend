@@ -5,15 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class AgentDTO {
-    private Long agentId;
-    private String fullName;
-    private String email;
-    private String assignBranch;
-    private String status;
-    private String contactNo;
+public class NotificationDTO {
+    private Long notificationId;
+    private String message;
+    private Date dateSent;
 }

@@ -21,9 +21,6 @@ public class AgentEntity {
     private String fullName;
     private String email;
     private String assignBranch;
-    private String password;
     private String status;
     private Integer contactNo;
-
-
 }
