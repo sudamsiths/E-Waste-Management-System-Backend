@@ -28,4 +28,17 @@ public class Garbage_DetailsEntity {
     private Double weight;
     private String description;
 
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UsersEntity user;
+
+    @ManyToOne
+    @JoinColumn(name = "agent_id")
+    private AgentEntity assignedAgent;
+
+    @ManyToOne
+    @JoinColumn(name = "recycling_center_id")
+    private Recycling_CenterEntity recyclingCenter;
+
 }

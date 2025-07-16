@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,4 +32,13 @@ public class UsersEntity {
     private String confirmPassword;
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Garbage_DetailsEntity> garbageItems;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<FeedbackEntity> feedbacks;
+
+    @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL)
+    private List<NotificationEntity> notifications;
 }
