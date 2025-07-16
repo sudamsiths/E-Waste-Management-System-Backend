@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/e-waste_management_system?createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/e-waste_management_system-Users?createDatabaseIfNotExist=true
     username: root
     password: 1234
 

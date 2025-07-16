@@ -29,4 +29,7 @@ public class AgentEntity {
 
     @OneToMany(mappedBy = "recipientAgent", cascade = CascadeType.ALL)
     private List<NotificationEntity> notifications;
+
+
+    
 }
