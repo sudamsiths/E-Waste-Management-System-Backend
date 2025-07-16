@@ -33,12 +33,12 @@ public class UsersEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Garbage_DetailsEntity> garbageItems;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<FeedbackEntity> feedbacks;
-
-    @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL)
-    private List<NotificationEntity> notifications;
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+//    private List<Garbage_DetailsEntity> garbageItems;
+//
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+//    private List<FeedbackEntity> feedbacks;
+//
+//    @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL)
+//    private List<NotificationEntity> notifications;
 }
