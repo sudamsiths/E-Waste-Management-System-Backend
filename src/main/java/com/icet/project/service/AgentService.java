@@ -38,6 +38,12 @@ public class AgentService {
     }
 
     public void deleteAgent(Long id) {
+        Optional<AgentEntity> agentEntity = agentRepository.findById(id);
+        if (agentEntity.isPresent()) {
+            agentRepository.delete(agentEntity.get());
+        } else {
+            throw new RuntimeException("Agent not found with id: " + id);
+        }
     }
 
     public List<AgentDTO> getAgentById(String fullName) {
