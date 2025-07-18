@@ -23,11 +23,4 @@ public class NotificationEntity {
     private Date dateSent;
 
 
-//    @ManyToOne
-//    @JoinColumn(name = "user_id", nullable = true)
-//    private UsersEntity recipient;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "agent_id", nullable = true)
-//    private AgentEntity recipientAgent;
 }

@@ -23,8 +23,4 @@ public class FeedbackEntity {
     private Date submittedAt;
     private String message;
 
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private UsersEntity user;
-
 }
