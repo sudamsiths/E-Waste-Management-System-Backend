@@ -20,9 +20,7 @@ public class Garbage_DetailsEntity {
     private String title;
     @Enumerated(EnumType.STRING)
     private category category;
-    @Lob
-    @Column(columnDefinition = "LONGBLOB")
-    private byte[] image;
+    private String image;
     private Double points;
     private String location;
     private Double weight;
