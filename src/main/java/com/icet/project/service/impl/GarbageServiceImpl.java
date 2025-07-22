@@ -1,8 +1,10 @@
-package com.icet.project.service;
+package com.icet.project.service.impl;
 
 import com.icet.project.model.dto.Garbage_DetailsDTO;
 import com.icet.project.model.entity.Garbage_DetailsEntity;
 import com.icet.project.repository.GarbageRepository;
+import com.icet.project.service.GarbageService;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,10 +13,10 @@ import java.util.List;
 
 
 @Service
-public class GarbageServiceImpl implements GarbageService{
+@RequiredArgsConstructor
+public class GarbageServiceImpl implements GarbageService {
 
-    @Autowired
-     GarbageRepository garbageRepository;
+    final GarbageRepository garbageRepository;
 
      ModelMapper modelMapper = new ModelMapper();
 
