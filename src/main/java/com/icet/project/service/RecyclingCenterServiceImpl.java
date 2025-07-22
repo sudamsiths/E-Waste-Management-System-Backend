@@ -2,6 +2,7 @@ package com.icet.project.service;
 
 import com.icet.project.model.entity.Recycling_CenterEntity;
 import com.icet.project.repository.RecyclingCenterRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,9 +10,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class RecyclingCenterService {
+public class RecyclingCenterServiceImpl implements Recyclecenter{
     @Autowired
     RecyclingCenterRepository recyclingCenterRepository;
+
+    ModelMapper modelMapper = new ModelMapper();
 
     public List<Recycling_CenterEntity> getAllCenters() {
         return recyclingCenterRepository.findAll();
@@ -30,17 +33,12 @@ public class RecyclingCenterService {
     }
 
     public Recycling_CenterEntity updateCenter(Long id, Recycling_CenterEntity center) {
-        Optional<Recycling_CenterEntity> existing = recyclingCenterRepository.findById(id);
-        if (existing.isPresent()) {
-            Recycling_CenterEntity c = existing.get();
-            c.setLocation(center.getLocation());
-            c.setCenterName(center.getCenterName());
-            c.setContactNo(center.getContactNo());
-            c.setContactPerson(center.getContactPerson());
-            c.setEmail(center.getEmail());
-            return recyclingCenterRepository.save(c);
+        if (recyclingCenterRepository.existsById(id)) {
+            center.setCenterId(id);
+            return recyclingCenterRepository.save(center);
+        } else {
+            throw new RuntimeException("Recycling Center with id " + id + " does not exist.");
         }
-        return null;
     }
 
     public void deleteCenter(Long id) {
