@@ -1,15 +1,18 @@
-package com.icet.project.service;
+package com.icet.project.service.impl;
 
 import com.icet.project.model.entity.FeedbackEntity;
 import com.icet.project.repository.FeedbackRepository;
+import com.icet.project.service.FeedbackService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class FeedbackServiceImpl implements FeedbackService{
-    @Autowired
-    FeedbackRepository feedbackRepository;
+@RequiredArgsConstructor
+
+public class FeedbackServiceImpl implements FeedbackService {
+    final FeedbackRepository feedbackRepository;
 
 
     public List<FeedbackEntity> getAllFeedback() {

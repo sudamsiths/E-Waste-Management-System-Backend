@@ -2,7 +2,7 @@ package com.icet.project.controller;
 
 import com.icet.project.model.entity.FeedbackEntity;
 import com.icet.project.service.FeedbackService;
-import com.icet.project.service.FeedbackServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,10 +10,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/feedback")
+@RequiredArgsConstructor
+
 public class FeedbackController {
 
-    @Autowired
-    FeedbackService feedbackService;
+    final FeedbackService feedbackService;
 
     @GetMapping("/getAll")
     public List<FeedbackEntity> getAllFeedback() {
