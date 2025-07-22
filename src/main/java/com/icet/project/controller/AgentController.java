@@ -31,7 +31,7 @@ public class AgentController {
         return agentService.createAgent(agent);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteAgent(@PathVariable Long id) {
          agentService.deleteAgent(id);
     }
