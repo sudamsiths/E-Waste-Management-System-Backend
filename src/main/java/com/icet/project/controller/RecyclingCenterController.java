@@ -2,7 +2,7 @@ package com.icet.project.controller;
 
 import com.icet.project.model.entity.Recycling_CenterEntity;
 import com.icet.project.service.Recyclecenter;
-import com.icet.project.service.RecyclingCenterServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,9 +10,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/recycling-centers")
+@RequiredArgsConstructor
 public class RecyclingCenterController {
-    @Autowired
-    Recyclecenter recyclingCenterService;
+
+    final Recyclecenter recyclingCenterService;
 
     @GetMapping("/getAll")
     public List<Recycling_CenterEntity> getAllCenters() {

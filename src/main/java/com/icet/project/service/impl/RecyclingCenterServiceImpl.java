@@ -1,7 +1,9 @@
-package com.icet.project.service;
+package com.icet.project.service.impl;
 
 import com.icet.project.model.entity.Recycling_CenterEntity;
 import com.icet.project.repository.RecyclingCenterRepository;
+import com.icet.project.service.Recyclecenter;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,9 +12,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class RecyclingCenterServiceImpl implements Recyclecenter{
-    @Autowired
-    RecyclingCenterRepository recyclingCenterRepository;
+@RequiredArgsConstructor
+
+public class RecyclingCenterServiceImpl implements Recyclecenter {
+    final RecyclingCenterRepository recyclingCenterRepository;
 
     ModelMapper modelMapper = new ModelMapper();
 
