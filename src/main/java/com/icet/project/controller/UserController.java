@@ -3,7 +3,7 @@ package com.icet.project.controller;
 import com.icet.project.model.dto.UsersDTO;
 import com.icet.project.model.entity.LoginRequest;
 import com.icet.project.service.UserService;
-import com.icet.project.service.UserServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,12 +12,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
+@RequiredArgsConstructor
 public class UserController {
 
-
-    @Autowired
-    UserService userService;
-
+    final UserService userService;
 
     @GetMapping("/getAll")
     public List<UsersDTO>getAllUsers(UsersDTO usersDTO){
