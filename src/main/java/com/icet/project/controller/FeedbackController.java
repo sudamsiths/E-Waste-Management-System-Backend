@@ -2,6 +2,7 @@ package com.icet.project.controller;
 
 import com.icet.project.model.entity.FeedbackEntity;
 import com.icet.project.service.FeedbackService;
+import com.icet.project.service.FeedbackServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,7 @@ public class FeedbackController {
         return feedbackService.createFeedback(feedback);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteFeedback(@PathVariable Long id) {
         feedbackService.deleteFeedback(id);
     }
