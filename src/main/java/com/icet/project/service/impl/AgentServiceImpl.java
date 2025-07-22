@@ -1,8 +1,10 @@
-package com.icet.project.service;
+package com.icet.project.service.impl;
 
 import com.icet.project.model.dto.AgentDTO;
 import com.icet.project.model.entity.AgentEntity;
 import com.icet.project.repository.AgentRepository;
+import com.icet.project.service.AgentService;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +14,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AgentServiceImpl implements AgentService{
+@RequiredArgsConstructor
 
-    @Autowired
-     AgentRepository agentRepository;
+public class AgentServiceImpl implements AgentService {
+
+     final AgentRepository agentRepository;
 
     ModelMapper modelMapper = new ModelMapper();
 
