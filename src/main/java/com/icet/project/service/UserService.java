@@ -10,4 +10,6 @@ public interface UserService {
     void addUsers(UsersDTO usersDTO);
 
     String login(String email, String password);
+
+    void updateUser(Long id ,UsersDTO usersDTO);
 }

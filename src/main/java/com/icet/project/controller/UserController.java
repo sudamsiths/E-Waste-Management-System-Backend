@@ -32,5 +32,10 @@ public class UserController {
         String result = userService.login(request.getEmail(), request.getPassword());
         return ResponseEntity.ok(result);
     }
+    @PutMapping("/update/{id}")
+    public void updateUser(@PathVariable Long id, @RequestBody UsersDTO usersDTO) {
+        userService.updateUser(id,usersDTO);
+    }
+
 
 }

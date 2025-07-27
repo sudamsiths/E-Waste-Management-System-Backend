@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -57,5 +58,26 @@ public class UserServiceImpl implements UserService {
         } else {
             return "Invalid credentials"; // User not found
         }
+    }
+
+    @Override
+    public void updateUser(Long id, UsersDTO usersDTO) {
+        Optional<UsersEntity> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            UsersEntity existingUser = optionalUser.get();
+            existingUser.setFullName(usersDTO.getFullName());
+            existingUser.setContactNo(Long.valueOf(usersDTO.getContactNo()));
+            existingUser.setUsername(usersDTO.getUsername());
+            existingUser.setAddress(usersDTO.getAddress());
+            existingUser.setEmail(usersDTO.getEmail());
+            existingUser.setRole(usersDTO.getRole());
+
+            if (usersDTO.getPassword() != null && !usersDTO.getPassword().isEmpty()) {
+                existingUser.setPassword(passwordEncoder.encode(usersDTO.getPassword()));
+            }
+
+            userRepository.save(existingUser);
+        }
+
     }
 }

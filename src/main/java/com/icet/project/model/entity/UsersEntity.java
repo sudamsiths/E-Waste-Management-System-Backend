@@ -19,7 +19,7 @@ public class UsersEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userId;
     private String fullName;
     private Long contactNo;
     @Column(unique = true)
