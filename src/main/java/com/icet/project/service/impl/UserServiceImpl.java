@@ -7,13 +7,13 @@ import com.icet.project.service.UserService;
 import com.icet.project.utill.Role; // Assuming this enum defines ADMIN and CUSTOMER roles
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -75,9 +75,28 @@ public class UserServiceImpl implements UserService {
             if (usersDTO.getPassword() != null && !usersDTO.getPassword().isEmpty()) {
                 existingUser.setPassword(passwordEncoder.encode(usersDTO.getPassword()));
             }
-
             userRepository.save(existingUser);
         }
 
     }
+
+    @Override
+    public List<UsersDTO> searchUsers(String fullName) {
+        List<UsersEntity> users = userRepository.findByFullName(fullName);
+        List<UsersDTO> userDTOs = new ArrayList<>();
+        for (UsersEntity user : users) {
+            UsersDTO dto = modelMapper.map(user, UsersDTO.class);
+            userDTOs.add(dto);
+        }
+        return userDTOs;
+    }
+    @Override
+    public List<UsersDTO> searchUsersByRole(String role) {
+        Role roleEnum = Role.valueOf(role.toUpperCase());
+        List<UsersEntity> users = userRepository.findByRole(roleEnum);
+        return users.stream()
+                .map(entity -> modelMapper.map(entity, UsersDTO.class))
+                .collect(Collectors.toList());
+    }
+
 }
