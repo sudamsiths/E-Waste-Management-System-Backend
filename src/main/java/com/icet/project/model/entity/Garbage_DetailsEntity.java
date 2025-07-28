@@ -1,6 +1,6 @@
 package com.icet.project.model.entity;
 
-import com.icet.project.utill.category;
+import com.icet.project.utill.Category;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +19,7 @@ public class Garbage_DetailsEntity {
     private Long id;
     private String title;
     @Enumerated(EnumType.STRING)
-    private category category;
+    private Category category;
     private String image;
     private Double points;
     private String location;

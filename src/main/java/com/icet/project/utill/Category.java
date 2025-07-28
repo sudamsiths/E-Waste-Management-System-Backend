@@ -1,6 +1,6 @@
 package com.icet.project.utill;
 
-public enum category {
+public enum Category {
     IT_EQUIPMENT,
     CONSUMER_ELECTRONICS,
     LIGHTING,

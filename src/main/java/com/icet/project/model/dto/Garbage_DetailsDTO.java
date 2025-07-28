@@ -1,6 +1,6 @@
 package com.icet.project.model.dto;
 
-import com.icet.project.utill.category;
+import com.icet.project.utill.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,7 @@ import lombok.ToString;
 public class Garbage_DetailsDTO {
     private Long id;
     private String title;
-    private category category;
+    private Category category;
     private String image;
     private Double points;
     private String location;

@@ -33,4 +33,9 @@ public class GarbageController {
         garbageService.deleteGarbage(id);
     }
 
+    @GetMapping("/search/By-Category/{category}")
+    public List<Garbage_DetailsDTO>findAllByCategory(@PathVariable("category") String category) {
+        return garbageService.findAllByCategory(category);
+    }
+
 }
