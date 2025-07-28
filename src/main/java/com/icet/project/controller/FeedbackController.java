@@ -1,5 +1,6 @@
 package com.icet.project.controller;
 
+import com.icet.project.model.dto.FeedbackDTO;
 import com.icet.project.model.entity.FeedbackEntity;
 import com.icet.project.service.FeedbackService;
 import lombok.RequiredArgsConstructor;
@@ -34,5 +35,10 @@ public class FeedbackController {
     @DeleteMapping("/delete/{id}")
     public void deleteFeedback(@PathVariable Long id) {
         feedbackService.deleteFeedback(id);
+    }
+
+    @GetMapping("/search/By-FeedbackType/{feedbackType}")
+    public List<FeedbackDTO> getTypeFeedback(@PathVariable("feedbackType") String feedbackType ){
+        return feedbackService.getFeedbackByType(feedbackType);
     }
 }
