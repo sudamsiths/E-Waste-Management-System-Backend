@@ -18,7 +18,7 @@ public class AgentController {
     final AgentService agentService;
 
     @GetMapping("/getAll")
-    public List<AgentDTO> getAllAgents(AgentDTO agentDTO ) {
+    public List<AgentDTO> getAllAgents(AgentDTO agentDTO) {
         return agentService.getAllAgents(agentDTO);
     }
 
@@ -34,6 +34,22 @@ public class AgentController {
 
     @DeleteMapping("/delete/{id}")
     public void deleteAgent(@PathVariable Long id) {
-         agentService.deleteAgent(id);
+        agentService.deleteAgent(id);
+    }
+
+    @PutMapping("/update/{id}")
+    public AgentDTO updateAgent(@PathVariable Long id, @RequestBody AgentEntity agent) {
+        agent.setAgentId(id);
+        return agentService.updateAgent(agent);
+    }
+
+    @GetMapping("/search/ByBranch/{assignBranch}")
+    public List<AgentDTO> getAgentsByBranch(@PathVariable String assignBranch) {
+        return agentService.getAgentsByBranch(assignBranch);
+    }
+
+    @GetMapping("/search/ByStatus/{status}")
+    public List<AgentDTO> getAgentsByStatus(@PathVariable ("status") String status) {
+        return agentService.getAgentsByStatus(status);
     }
 }

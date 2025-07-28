@@ -10,4 +10,9 @@ public interface AgentService {
     AgentDTO createAgent(AgentEntity agent);
     List<AgentDTO> getAgentById(String fullName);
     void deleteAgent(Long id);
+    AgentDTO updateAgent(AgentEntity agent);
+
+    List<AgentDTO> getAgentsByBranch(String assignBranch);
+
+    List<AgentDTO> getAgentsByStatus(String status);
 }

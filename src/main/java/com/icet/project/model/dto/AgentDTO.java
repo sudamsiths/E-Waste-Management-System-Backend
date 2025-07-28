@@ -1,5 +1,6 @@
 package com.icet.project.model.dto;
 
+import com.icet.project.utill.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,6 @@ public class AgentDTO {
     private String fullName;
     private String email;
     private String assignBranch;
-    private String status;
+    private Status status;
     private String contactNo;
 }

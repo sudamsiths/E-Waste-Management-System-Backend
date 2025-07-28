@@ -1,5 +1,6 @@
 package com.icet.project.model.entity;
 
+import com.icet.project.utill.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +20,8 @@ public class AgentEntity {
     private String fullName;
     private String email;
     private String assignBranch;
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
     private Integer contactNo;
 
 //    @OneToMany(mappedBy = "assignedAgent", cascade = CascadeType.ALL)
