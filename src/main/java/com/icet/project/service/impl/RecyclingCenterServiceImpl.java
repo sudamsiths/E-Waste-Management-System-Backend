@@ -1,5 +1,6 @@
 package com.icet.project.service.impl;
 
+import com.icet.project.model.dto.Recycling_CenterDTO;
 import com.icet.project.model.entity.Recycling_CenterEntity;
 import com.icet.project.repository.RecyclingCenterRepository;
 import com.icet.project.service.Recyclecenter;
@@ -17,7 +18,7 @@ import java.util.Optional;
 public class RecyclingCenterServiceImpl implements Recyclecenter {
     final RecyclingCenterRepository recyclingCenterRepository;
 
-    ModelMapper modelMapper = new ModelMapper();
+    final ModelMapper modelMapper;
 
     public List<Recycling_CenterEntity> getAllCenters() {
         return recyclingCenterRepository.findAll();
@@ -32,6 +33,12 @@ public class RecyclingCenterServiceImpl implements Recyclecenter {
     }
 
     public Recycling_CenterEntity createCenter(Recycling_CenterEntity center) {
+        if (recyclingCenterRepository.findBycenterName(center.getCenterName()).isPresent()) {
+            throw new RuntimeException("Recycling Center with name " + center.getCenterName() + " already exists.");
+        }
+        if (center.getEmail() != null && recyclingCenterRepository.findByEmail(center.getEmail()).isPresent()) {
+            throw new RuntimeException("Recycling Center with email " + center.getEmail() + " already exists.");
+        }
         return recyclingCenterRepository.save(center);
     }
 
@@ -46,5 +53,13 @@ public class RecyclingCenterServiceImpl implements Recyclecenter {
 
     public void deleteCenter(Long id) {
         recyclingCenterRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Recycling_CenterDTO> getAllLocationcenters(String location) {
+       List<Recycling_CenterEntity> recyclingCenterEntities =recyclingCenterRepository.findByLocation(location);
+        return recyclingCenterEntities.stream()
+                .map(entity -> modelMapper.map(entity, Recycling_CenterDTO.class))
+                .toList();
     }
 }

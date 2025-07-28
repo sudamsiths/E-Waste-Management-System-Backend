@@ -1,5 +1,6 @@
 package com.icet.project.service;
 
+import com.icet.project.model.dto.Recycling_CenterDTO;
 import com.icet.project.model.entity.Recycling_CenterEntity;
 
 import java.util.List;
@@ -14,4 +15,6 @@ public interface Recyclecenter {
     Recycling_CenterEntity updateCenter(Long id, Recycling_CenterEntity center);
 
     void deleteCenter(Long id);
+
+    List<Recycling_CenterDTO> getAllLocationcenters(String location);
 }

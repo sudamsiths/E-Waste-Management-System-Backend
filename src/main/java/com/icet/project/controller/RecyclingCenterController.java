@@ -1,5 +1,6 @@
 package com.icet.project.controller;
 
+import com.icet.project.model.dto.Recycling_CenterDTO;
 import com.icet.project.model.entity.Recycling_CenterEntity;
 import com.icet.project.service.Recyclecenter;
 import lombok.RequiredArgsConstructor;
@@ -38,5 +39,10 @@ public class RecyclingCenterController {
     @DeleteMapping("/{id}")
     public void deleteCenter(@PathVariable Long id) {
         recyclingCenterService.deleteCenter(id);
+    }
+
+    @GetMapping("/search/by-location/{location}")
+    public List<Recycling_CenterDTO> getAllLocationcenters(@PathVariable String location ){
+        return recyclingCenterService.getAllLocationcenters(location);
     }
 }
