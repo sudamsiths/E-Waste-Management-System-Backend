@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
 
     public List<UsersDTO> getAllUsers(UsersDTO userDTOs) {
-        List<UsersEntity> all = userRepository.findAll();
+        List<UsersEntity> all = userRepository.findAll();//get All Users
         List<UsersDTO> userDTO = new ArrayList<>();
         for (UsersEntity customerEntity : all) {
             UsersDTO map = modelMapper.map(customerEntity, UsersDTO.class);
@@ -38,12 +39,20 @@ public class UserServiceImpl implements UserService {
     }
 
     public void addUsers(UsersDTO usersDTO) {
-        usersDTO.setPassword(passwordEncoder.encode(usersDTO.getPassword()));
-        userRepository.save(modelMapper.map(usersDTO, UsersEntity.class));
+        if (Objects.equals(usersDTO.getPassword(), usersDTO.getConfirmPassword())) {
+            if (userRepository.findByEmail(usersDTO.getEmail()) != null) {
+                throw new IllegalArgumentException("Email already exists");
+            }else {
+                usersDTO.setPassword(passwordEncoder.encode(usersDTO.getPassword()));//encrypt users password
+                userRepository.save(modelMapper.map(usersDTO, UsersEntity.class));//save user
+            }
+        } else {
+            throw new IllegalArgumentException("Passwords do not match");
+        }
     }
 
     public String login(String email, String password) {
-        UsersEntity user = userRepository.findByEmail(email);
+        UsersEntity user = userRepository.findByEmail(email);//custom method to find user by email
 
         if (user != null) {
             if (passwordEncoder.matches(password, user.getPassword())) {
@@ -77,7 +86,6 @@ public class UserServiceImpl implements UserService {
             }
             userRepository.save(existingUser);
         }
-
     }
 
     @Override
@@ -93,10 +101,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UsersDTO> searchUsersByRole(String role) {
         Role roleEnum = Role.valueOf(role.toUpperCase());
-        List<UsersEntity> users = userRepository.findByRole(roleEnum);
+        List<UsersEntity> users = userRepository.findByRole(roleEnum);// custom method Find users by role
         return users.stream()
                 .map(entity -> modelMapper.map(entity, UsersDTO.class))
                 .collect(Collectors.toList());
     }
-
 }

@@ -10,10 +10,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserRepository extends JpaRepository<UsersEntity, Long> { // Assuming Long is your ID type
+public interface UserRepository extends JpaRepository<UsersEntity, Long> {
+
     UsersEntity findByEmail(String email);
-
     List<UsersEntity> findByFullName(String fullName);
-
     List<UsersEntity> findByRole(Role role);
 }

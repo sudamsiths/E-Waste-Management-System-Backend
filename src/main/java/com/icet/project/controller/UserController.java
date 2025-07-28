@@ -39,7 +39,7 @@ public class UserController {
         userService.updateUser(id,usersDTO);
     }
 
-    @GetMapping("/search/users/{fullName}")
+    @GetMapping("/search/users/by-name/{fullName}")
     public List<UsersDTO>searchUsers(@PathVariable ("fullName") String fullName){
         System.out.println("Searching for users with full name: " + fullName);
         return userService.searchUsers(fullName);
