@@ -6,7 +6,6 @@ import com.icet.project.repository.RecyclingCenterRepository;
 import com.icet.project.service.Recyclecenter;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,10 +25,7 @@ public class RecyclingCenterServiceImpl implements Recyclecenter {
 
     public Recycling_CenterEntity getCenterByName(String centerName) {
         Optional<Object> bycenterName = recyclingCenterRepository.findBycenterName(centerName);
-        if (bycenterName.isPresent()) {
-            return (Recycling_CenterEntity) bycenterName.get();
-        }
-        return null;
+        return (Recycling_CenterEntity) bycenterName.orElse(null);
     }
 
     public Recycling_CenterEntity createCenter(Recycling_CenterEntity center) {

@@ -4,7 +4,6 @@ import com.icet.project.model.dto.Recycling_CenterDTO;
 import com.icet.project.model.entity.Recycling_CenterEntity;
 import com.icet.project.service.Recyclecenter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,7 +41,7 @@ public class RecyclingCenterController {
     }
 
     @GetMapping("/search/by-location/{location}")
-    public List<Recycling_CenterDTO> getAllLocationcenters(@PathVariable String location ){
+    public List<Recycling_CenterDTO> getAllLocationCenters(@PathVariable String location ){
         return recyclingCenterService.getAllLocationcenters(location);
     }
 }
