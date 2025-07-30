@@ -62,10 +62,10 @@ public class UserServiceImpl implements UserService {
                     return "Redirect to Customer Interface";
                 }
             } else {
-                return "Invalid credentials"; // Passwords don't match
+                return "Invalid Password"; // Passwords don't match
             }
         } else {
-            return "Invalid credentials"; // User not found
+            return "Email OR Password Was Cannot be Null"; // User not found
         }
     }
 
