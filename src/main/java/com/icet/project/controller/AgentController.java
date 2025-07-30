@@ -5,6 +5,7 @@ import com.icet.project.model.entity.AgentEntity;
 import com.icet.project.service.AgentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -52,4 +53,15 @@ public class AgentController {
     public List<AgentDTO> getAgentsByStatus(@PathVariable ("status") String status) {
         return agentService.getAgentsByStatus(status);
     }
+    @GetMapping("/agent-tickets/{agentId}")
+    public List<GarbageTicketDTO> getAssignedTickets(@PathVariable Long agentId) {
+        return garbageTicketService.getTicketsByAgent(agentId);
+    }
+
+    @PostMapping("/ticket/{id}/collect")
+    public ResponseEntity<String> collectTicket(@PathVariable Long id) {
+        garbageTicketService.markAsCollected(id);
+        return ResponseEntity.ok("Ticket marked as collected");
+    }
+
 }
