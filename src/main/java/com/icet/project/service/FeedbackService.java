@@ -11,4 +11,6 @@ public interface FeedbackService {
     FeedbackEntity createFeedback(FeedbackEntity feedback);
     void deleteFeedback(Long id);
     List<FeedbackDTO> getFeedbackByType(String feedbackType);
+
+    List<FeedbackDTO> getFeedbackByTypeAndStatus(String feedbackType, String status);
 }

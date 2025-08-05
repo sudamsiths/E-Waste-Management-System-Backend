@@ -41,4 +41,8 @@ public class FeedbackController {
     public List<FeedbackDTO> getTypeFeedback(@PathVariable("feedbackType") String feedbackType ){
         return feedbackService.getFeedbackByType(feedbackType);
     }
+    @GetMapping("/search/By-FeedbackTypeAndStatus/{feedbackType}/{status}")
+    public List<FeedbackDTO> getTypeAndStatusFeedback(@PathVariable("feedbackType") String feedbackType, @PathVariable("status") String status) {
+        return feedbackService.getFeedbackByTypeAndStatus(feedbackType, status);
+    }
 }
