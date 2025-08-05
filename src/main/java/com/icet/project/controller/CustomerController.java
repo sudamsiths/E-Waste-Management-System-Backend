@@ -47,10 +47,10 @@ public class CustomerController {
     public List<UsersDTO> searchUsersByRole(@PathVariable("role") String role) {
         return userService.searchUsersByRole(role);
     }
-    @PostMapping("/garbage-ticket")
-    public ResponseEntity<String> submitTicket(@RequestBody GarbageTicketDTO ticketDto) {
-        // convert DTO to entity, set status to PENDING, save to DB
-        return ResponseEntity.ok("Ticket submitted successfully");
-    }
+//    @PostMapping("/garbage-ticket")
+//    public ResponseEntity<String> submitTicket(@RequestBody GarbageTicketDTO ticketDto) {
+//        // convert DTO to entity, set status to PENDING, save to DB
+//        return ResponseEntity.ok("Ticket submitted successfully");
+//    }
 
 }

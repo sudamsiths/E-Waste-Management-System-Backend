@@ -47,16 +47,16 @@ public class AdminController {
     public List<UsersDTO> searchUsersByRole(@PathVariable("role") String role) {
         return userService.searchUsersByRole(role);
     }
-    @GetMapping("/tickets/pending")
-    public List<GarbageTicketDTO> viewPendingTickets() {
-        return garbageTicketService.getPendingTickets();
-    }
-
-    @PostMapping("/assign-ticket")
-    public ResponseEntity<String> assignTicket(@RequestParam Long ticketId, @RequestParam Long agentId) {
-        garbageTicketService.assignAgent(ticketId, agentId);
-        return ResponseEntity.ok("Agent assigned successfully");
-    }
+//    @GetMapping("/tickets/pending")
+//    public List<GarbageTicketDTO> viewPendingTickets() {
+//        return garbageTicketService.getPendingTickets();
+//    }
+//
+//    @PostMapping("/assign-ticket")
+//    public ResponseEntity<String> assignTicket(@RequestParam Long ticketId, @RequestParam Long agentId) {
+//        garbageTicketService.assignAgent(ticketId, agentId);
+//        return ResponseEntity.ok("Agent assigned successfully");
+//    }
 
 
 }
