@@ -13,4 +13,6 @@ public interface Recyclecenter {
     Recycling_CenterEntity updateCenter(Long id, Recycling_CenterEntity center);
     void deleteCenter(Long id);
     List<Recycling_CenterDTO> getAllLocationcenters(String location);
+
+    List<Recycling_CenterDTO> getAllTypecenters(String type);
 }

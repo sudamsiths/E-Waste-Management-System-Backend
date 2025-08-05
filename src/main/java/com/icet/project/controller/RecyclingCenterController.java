@@ -44,4 +44,8 @@ public class RecyclingCenterController {
     public List<Recycling_CenterDTO> getAllLocationCenters(@PathVariable String location ){
         return recyclingCenterService.getAllLocationcenters(location);
     }
+    @GetMapping("/search/by-type/{type}")
+    public List<Recycling_CenterDTO> getAllTypeCenters(@PathVariable String type) {
+        return recyclingCenterService.getAllTypecenters(type);
+    }
 }

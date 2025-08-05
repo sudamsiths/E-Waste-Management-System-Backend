@@ -11,4 +11,6 @@ public interface RecyclingCenterRepository extends JpaRepository<Recycling_Cente
     Optional<Object> findBycenterName(String centerName);
     List<Recycling_CenterEntity> findByLocation(String location);
     Optional<Object> findByEmail(String email);
+
+    List<Recycling_CenterEntity> findByType(String type);
 }
