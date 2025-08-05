@@ -37,5 +37,9 @@ public class GarbageController {
     public List<Garbage_DetailsDTO>findAllByCategory(@PathVariable("category") String category) {
         return garbageService.findAllByCategory(category);
     }
+    @GetMapping("/getById/{id}")
+    public Garbage_DetailsEntity getGarbageById(@PathVariable Long id) {
+        return garbageService.getGarbageById(id);
+    }
 
 }

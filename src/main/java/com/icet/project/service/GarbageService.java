@@ -13,4 +13,5 @@ public interface GarbageService {
     void deleteGarbage(Long id);
     List<Garbage_DetailsDTO> findAllByCategory(String category);
 
+    Garbage_DetailsEntity getGarbageById(Long id);
 }

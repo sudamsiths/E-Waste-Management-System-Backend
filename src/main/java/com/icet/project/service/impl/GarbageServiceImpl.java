@@ -54,4 +54,10 @@ public class GarbageServiceImpl implements GarbageService {
                 .map(entity -> modelMapper.map(entity, Garbage_DetailsDTO.class))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Garbage_DetailsEntity getGarbageById(Long id) {
+        return garbageRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Garbage with id " + id + " does not exist."));
+    }
 }
