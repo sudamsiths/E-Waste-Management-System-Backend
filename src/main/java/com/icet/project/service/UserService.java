@@ -1,17 +1,16 @@
 package com.icet.project.service;
 
-import com.icet.project.model.dto.UsersDTO;
-import com.icet.project.utill.Role;
+import com.icet.project.model.dto.UserDTO;
 
 import java.util.List;
 
 public interface UserService {
 
-    List<UsersDTO> getAllUsers(UsersDTO usersDTO);
-    void addUsers(UsersDTO usersDTO);
+    List<UserDTO> getAllUsers(UserDTO usersDTO);
+    void addUsers(UserDTO usersDTO);
     String login(String email, String password);
-    void updateUser(Long id ,UsersDTO usersDTO);
-    List<UsersDTO> searchUsers(String fullName);
-    List<UsersDTO> searchUsersByRole(String role);
-
+    void updateUser(Long id , UserDTO usersDTO);
+    List<UserDTO> searchUsers(String fullName);
+    List<UserDTO> searchUsersByRole(String role);
+    String verify(UserDTO users);
 }

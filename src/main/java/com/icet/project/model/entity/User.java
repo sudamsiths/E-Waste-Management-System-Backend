@@ -7,21 +7,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Entity
 @Table(name = "users")
-public class UsersEntity {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
     private String fullName;
-    private Long contactNo;
+    private String contactNo;
     @Column(unique = true)
     private String username;
     private String address;
