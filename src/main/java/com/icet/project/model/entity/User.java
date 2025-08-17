@@ -19,7 +19,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
     private String fullName;
-    private String contactNo;
+    private Integer contactNo;
     @Column(unique = true)
     private String username;
     private String address;
@@ -31,12 +31,4 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-//    private List<Garbage_DetailsEntity> garbageItems;
-//
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-//    private List<FeedbackEntity> feedbacks;
-//
-//    @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL)
-//    private List<NotificationEntity> notifications;
 }

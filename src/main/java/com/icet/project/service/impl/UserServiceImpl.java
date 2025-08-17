@@ -46,16 +46,16 @@ public class UserServiceImpl implements UserService {
     }
 
     public void addUsers(UserDTO usersDTO) {
-        if (Objects.equals(usersDTO.getPassword(), usersDTO.getConfirmPassword())) {
-            if (userRepository.findByEmail(usersDTO.getEmail()) != null) {
-                throw new IllegalArgumentException("Email already exists");
-            }else {
-                usersDTO.setPassword(passwordEncoder.encode(usersDTO.getPassword()));//encrypt users password
-                userRepository.save(modelMapper.map(usersDTO, User.class));//save user
-            }
-        } else {
-            throw new IllegalArgumentException("Passwords do not match");
-        }
+//        if (Objects.equals(usersDTO.getPassword(), usersDTO.getConfirmPassword())) {
+//            User user = modelMapper.map(usersDTO, User.class);
+//            user.setPassword(passwordEncoder.encode(usersDTO.getPassword())); // Encrypt password
+//            userRepository.save(user);
+//        } else {
+//            throw new IllegalArgumentException("Passwords do not match");
+//        }
+        User user = modelMapper.map(usersDTO, User.class);
+        user.setPassword(passwordEncoder.encode(usersDTO.getPassword())); // Encrypt password
+        userRepository.save(user);
     }
 
     public String login(String email, String password) {
