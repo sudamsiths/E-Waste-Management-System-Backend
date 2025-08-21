@@ -19,7 +19,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
     private String fullName;
-    private Integer contactNo;
+    private String contactNo;
     @Column(unique = true)
     private String username;
     private String address;

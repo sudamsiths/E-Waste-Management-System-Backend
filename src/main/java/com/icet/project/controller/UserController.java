@@ -30,8 +30,11 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public void addUsers(@RequestBody UserDTO usersDTO ){
+    public ResponseEntity<?> addUsers(@RequestBody UserDTO usersDTO){
+        System.out.println("Received registration request: " + usersDTO);
+        System.out.println("Contact number received: " + usersDTO.getContactNo());
         userService.addUsers(usersDTO);
+        return ResponseEntity.ok("User registered successfully");
     }
 
 
