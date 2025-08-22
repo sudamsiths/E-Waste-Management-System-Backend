@@ -21,7 +21,7 @@ public class Garbage_DetailsEntity {
     @Enumerated(EnumType.STRING)
     private Category category;
     private String image;
-    private Double points;
+    private Integer points;
     private String location;
     private Double weight;
     private String description;

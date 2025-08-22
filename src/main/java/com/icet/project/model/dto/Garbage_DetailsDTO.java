@@ -15,7 +15,7 @@ public class Garbage_DetailsDTO {
     private String title;
     private Category category;
     private String image;
-    private Double points;
+    private Integer points;
     private String location;
     private Double weight;
     private String description;
