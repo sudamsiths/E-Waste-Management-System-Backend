@@ -126,4 +126,12 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public List<UserDTO> findUsersByRole(String role) {
+        Role roleEnum = Role.valueOf(role.toUpperCase());
+        List<User> users = userRepository.findByRole(roleEnum);
+        return users.stream()
+                .map(entity -> modelMapper.map(entity, UserDTO.class))
+                .collect(Collectors.toList());
+    }
 }

@@ -13,4 +13,6 @@ public interface UserService {
     List<UserDTO> searchUsers(String fullName);
     List<UserDTO> searchUsersByRole(String role);
     String verify(UserDTO users);
+
+    List<UserDTO> findUsersByRole(String role);
 }

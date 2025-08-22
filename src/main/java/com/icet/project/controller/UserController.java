@@ -55,4 +55,9 @@ public class UserController {
         return userService.searchUsersByRole(role);
     }
 
+    @GetMapping("find/{Role}")
+    public List<UserDTO> findUsersByRole(@PathVariable("Role") String role) {
+        return userService.findUsersByRole(role);
+    }
+
 }
