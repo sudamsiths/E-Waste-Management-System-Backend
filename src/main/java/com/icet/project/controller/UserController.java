@@ -55,8 +55,9 @@ public class UserController {
         return userService.searchUsersByRole(role);
     }
 
-    @GetMapping("find/{Role}")
-    public List<UserDTO> findUsersByRole(@PathVariable("Role") String role) {
+    @GetMapping("/find/{role}")
+    public List<UserDTO> findUsersByRole(@PathVariable("role") String role) {
+        System.out.println("Finding users with role: " + role);
         return userService.findUsersByRole(role);
     }
 
