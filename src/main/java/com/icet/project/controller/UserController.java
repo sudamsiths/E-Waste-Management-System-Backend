@@ -38,10 +38,10 @@ public class UserController {
     }
 
 
-    @PutMapping("/update/{id}")
-    public void updateUser(@PathVariable ("id") Long id, @RequestBody UserDTO usersDTO) {
-        System.out.println("Updating user with ID: " + id + " with data: " + usersDTO);
-        userService.updateUser(id,usersDTO);
+    @PutMapping("/update/{username}")
+    public void updateUser(@PathVariable ("username") String username, @RequestBody UserDTO usersDTO) {
+        System.out.println("Updating user with username: " + username + " with data: " + usersDTO);
+        userService.updateUser(username,usersDTO);
     }
 
     @GetMapping("/search/users/by-name/{fullName}")

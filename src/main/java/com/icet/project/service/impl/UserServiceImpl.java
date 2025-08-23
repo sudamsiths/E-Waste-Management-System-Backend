@@ -77,22 +77,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(Long id, UserDTO usersDTO) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        if (optionalUser.isPresent()) {
-            User existingUser = optionalUser.get();
-            if (Objects.equals(usersDTO.getPassword(), usersDTO.getConfirmPassword())) {
-                existingUser.setFullName(usersDTO.getFullName());
-                existingUser.setEmail(usersDTO.getEmail());
-                existingUser.setUsername(usersDTO.getUsername());
-                existingUser.setRole(usersDTO.getRole());
-                existingUser.setPassword(passwordEncoder.encode(usersDTO.getPassword())); // Encrypt password
-                userRepository.save(existingUser);
-            } else {
-                throw new IllegalArgumentException("Passwords do not match");
+    public void updateUser(String username, UserDTO usersDTO) {
+        User byUsername = userRepository.findByUsername(username);
+        if (byUsername != null) {
+            byUsername.setFullName(usersDTO.getFullName());
+            byUsername.setEmail(usersDTO.getEmail());
+            byUsername.setContactNo(usersDTO.getContactNo());
+            byUsername.setAddress(usersDTO.getAddress());
+            byUsername.setUsername(usersDTO.getUsername());
+            if (usersDTO.getPassword() != null && !usersDTO.getPassword().isEmpty()) {
+                byUsername.setPassword(passwordEncoder.encode(usersDTO.getPassword()));
             }
+            userRepository.save(byUsername);
         } else {
-            throw new IllegalArgumentException("User not found with ID: " + id);
+            throw new IllegalArgumentException("User not found with username: " + username);
         }
     }
 
