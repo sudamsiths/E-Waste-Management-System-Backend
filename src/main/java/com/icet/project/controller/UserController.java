@@ -2,6 +2,7 @@ package com.icet.project.controller;
 
 import com.icet.project.model.dto.UserDTO;
 import com.icet.project.model.entity.LoginRequest;
+import com.icet.project.model.entity.User;
 import com.icet.project.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -38,10 +39,19 @@ public class UserController {
     }
 
 
+    @GetMapping("/{username}")
+    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
+        User user = userService.findByUsername(username);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user);
+    }
+
     @PutMapping("/update/{username}")
-    public void updateUser(@PathVariable ("username") String username, @RequestBody UserDTO usersDTO) {
-        System.out.println("Updating user with username: " + username + " with data: " + usersDTO);
-        userService.updateUser(username,usersDTO);
+    public ResponseEntity<User> updateUser(@PathVariable String username, @RequestBody User userDetails) {
+        User updatedUser = userService.updateUser(username, userDetails);
+        return ResponseEntity.ok(updatedUser);
     }
 
     @GetMapping("/search/users/by-name/{fullName}")

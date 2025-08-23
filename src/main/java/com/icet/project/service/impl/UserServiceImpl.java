@@ -76,22 +76,32 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public void updateUser(String username, UserDTO usersDTO) {
-        User byUsername = userRepository.findByUsername(username);
-        if (byUsername != null) {
-            byUsername.setFullName(usersDTO.getFullName());
-            byUsername.setEmail(usersDTO.getEmail());
-            byUsername.setContactNo(usersDTO.getContactNo());
-            byUsername.setAddress(usersDTO.getAddress());
-            byUsername.setUsername(usersDTO.getUsername());
-            if (usersDTO.getPassword() != null && !usersDTO.getPassword().isEmpty()) {
-                byUsername.setPassword(passwordEncoder.encode(usersDTO.getPassword()));
-            }
-            userRepository.save(byUsername);
-        } else {
-            throw new IllegalArgumentException("User not found with username: " + username);
+
+
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    public User updateUser(String username, User userDetails) {
+        User user = userRepository.findByUsername(username);
+
+        if (user == null) {
+            throw new RuntimeException("User not found with username: " + username);
         }
+
+        // Update user details
+        user.setFullName(userDetails.getFullName());
+        user.setEmail(userDetails.getEmail());
+        user.setContactNo(userDetails.getContactNo());
+        user.setAddress(userDetails.getAddress());
+
+        // Only update password if a new one is provided
+        if (userDetails.getPassword() != null && !userDetails.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
+        }
+
+        // Save and return updated user
+        return userRepository.save(user);
     }
 
     @Override
