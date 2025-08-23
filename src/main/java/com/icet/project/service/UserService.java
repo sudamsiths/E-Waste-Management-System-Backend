@@ -14,8 +14,7 @@ public interface UserService {
     List<UserDTO> searchUsersByRole(String role);
     String verify(UserDTO users);
     List<UserDTO> findUsersByRole(String role);
-
     User findByUsername(String username);
 
-    User updateUser(String username, User userDetails);
+    User updateUser(UserDTO userUpdateDTO);
 }

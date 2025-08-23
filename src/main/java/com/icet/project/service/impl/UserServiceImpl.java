@@ -16,8 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -77,32 +75,67 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    // Add this to your UserService implementation
 
+    @Override
+    public User updateUser(UserDTO userUpdateDTO) {
+        try {
+            System.out.println("Updating user: " + userUpdateDTO.getUsername());
+
+            // Find user by username
+            String username = userUpdateDTO.getUsername();
+            User user = userRepository.findByUsername(username);
+
+            if (user == null) {
+                throw new RuntimeException("User not found with username: " + username);
+            }
+
+            // Update user fields
+            user.setFullName(userUpdateDTO.getFullName());
+            user.setContactNo(userUpdateDTO.getContactNo());
+            user.setEmail(userUpdateDTO.getEmail());
+            user.setAddress(userUpdateDTO.getAddress());
+
+            // Update password if provided
+            if (userUpdateDTO.getPassword() != null && !userUpdateDTO.getPassword().isEmpty()) {
+                System.out.println("Updating password for user: " + username);
+                user.setPassword(passwordEncoder.encode(userUpdateDTO.getPassword()));
+            }
+
+            // Save and return updated user
+            User savedUser = userRepository.save(user);
+            System.out.println("User updated successfully: " + savedUser.getFullName());
+
+            return savedUser;
+
+        } catch (Exception ex) {
+            System.err.println("Error in updateUser service: " + ex.getMessage());
+            ex.printStackTrace();
+            throw new RuntimeException("Failed to update user: " + ex.getMessage());
+        }
+    }
+
+    @Override
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
+        try {
+            System.out.println("Finding user by username: " + username);
+            User user = userRepository.findByUsername(username);
+
+            if (user != null) {
+                System.out.println("User found: " + user.getFullName());
+            } else {
+                System.out.println("User not found with username: " + username);
+            }
+
+            return user;
+
+        } catch (Exception ex) {
+            System.err.println("Error finding user by username: " + ex.getMessage());
+            ex.printStackTrace();
+            throw new RuntimeException("Failed to find user: " + ex.getMessage());
+        }
     }
 
-    public User updateUser(String username, User userDetails) {
-        User user = userRepository.findByUsername(username);
-
-        if (user == null) {
-            throw new RuntimeException("User not found with username: " + username);
-        }
-
-        // Update user details
-        user.setFullName(userDetails.getFullName());
-        user.setEmail(userDetails.getEmail());
-        user.setContactNo(userDetails.getContactNo());
-        user.setAddress(userDetails.getAddress());
-
-        // Only update password if a new one is provided
-        if (userDetails.getPassword() != null && !userDetails.getPassword().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
-        }
-
-        // Save and return updated user
-        return userRepository.save(user);
-    }
 
     @Override
     public List<UserDTO> searchUsers(String fullName) {
