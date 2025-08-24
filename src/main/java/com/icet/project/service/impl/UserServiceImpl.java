@@ -5,7 +5,7 @@ import com.icet.project.model.entity.User;
 import com.icet.project.repository.UserRepository;
 import com.icet.project.service.JWTService;
 import com.icet.project.service.UserService;
-import com.icet.project.utill.Role; // Assuming this enum defines ADMIN and CUSTOMER roles
+import com.icet.project.utill.Role;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,41 +23,67 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final JWTService jwtService;
-
-    final UserRepository userRepository;
-
+    private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
+    private final ModelMapper modelMapper;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    final ModelMapper modelMapper;
-
-    final BCryptPasswordEncoder passwordEncoder;
-
-
-    public List<UserDTO> getAllUsers(UserDTO userDTOs) {
-        List<User> all = userRepository.findAll();//get All Users
+    @Override
+    public List<UserDTO> getAllUsers() {
+        List<User> all = userRepository.findAll();
         List<UserDTO> userDTO = new ArrayList<>();
-        for (User customerEntity : all) {
-            UserDTO map = modelMapper.map(customerEntity, UserDTO.class);
+        for (User userEntity : all) {
+            UserDTO map = modelMapper.map(userEntity, UserDTO.class);
+            // Don't include password in response
+            map.setPassword(null);
             userDTO.add(map);
         }
         return userDTO;
     }
 
+    @Override
     public void addUsers(UserDTO usersDTO) {
-//        if (Objects.equals(usersDTO.getPassword(), usersDTO.getConfirmPassword())) {
-//            User user = modelMapper.map(usersDTO, User.class);
-//            user.setPassword(passwordEncoder.encode(usersDTO.getPassword())); // Encrypt password
-//            userRepository.save(user);
-//        } else {
-//            throw new IllegalArgumentException("Passwords do not match");
-//        }
-        User user = modelMapper.map(usersDTO, User.class);
-        user.setPassword(passwordEncoder.encode(usersDTO.getPassword())); // Encrypt password
-        userRepository.save(user);
+        try {
+            // Validate required fields
+            if (usersDTO.getUsername() == null || usersDTO.getUsername().trim().isEmpty()) {
+                throw new IllegalArgumentException("Username is required");
+            }
+            if (usersDTO.getPassword() == null || usersDTO.getPassword().trim().isEmpty()) {
+                throw new IllegalArgumentException("Password is required");
+            }
+            if (usersDTO.getEmail() == null || usersDTO.getEmail().trim().isEmpty()) {
+                throw new IllegalArgumentException("Email is required");
+            }
+
+            // Check if username already exists
+            if (userRepository.findByUsername(usersDTO.getUsername()) != null) {
+                throw new IllegalArgumentException("Username already exists");
+            }
+
+            // Check if email already exists
+            if (userRepository.findByEmail(usersDTO.getEmail()) != null) {
+                throw new IllegalArgumentException("Email already exists");
+            }
+
+            User user = modelMapper.map(usersDTO, User.class);
+            user.setPassword(passwordEncoder.encode(usersDTO.getPassword()));
+
+            // Set default role if not provided
+            if (user.getRole() == null) {
+                user.setRole(Role.CUSTOMER);
+            }
+
+            userRepository.save(user);
+            System.out.println("User registered successfully: " + user.getUsername());
+        } catch (Exception ex) {
+            System.err.println("Error in addUsers: " + ex.getMessage());
+            throw new RuntimeException("Failed to register user: " + ex.getMessage());
+        }
     }
 
+    @Override
     public String login(String email, String password) {
-        User user = userRepository.findByEmail(email);//custom method to find user by email
+        User user = userRepository.findByEmail(email);
 
         if (user != null) {
             if (passwordEncoder.matches(password, user.getPassword())) {
@@ -67,15 +93,12 @@ public class UserServiceImpl implements UserService {
                     return "Redirect to Customer Interface";
                 }
             } else {
-                return "Invalid Password"; // Passwords don't match
+                return "Invalid Password";
             }
         } else {
-            return "Email OR Password Was Cannot be Null"; // User not found
+            return "Email OR Password Was Cannot be Null";
         }
     }
-
-
-    // Add this to your UserService implementation
 
     @Override
     public User updateUser(UserDTO userUpdateDTO) {
@@ -84,20 +107,41 @@ public class UserServiceImpl implements UserService {
 
             // Find user by username
             String username = userUpdateDTO.getUsername();
-            User user = userRepository.findByUsername(username);
+            if (username == null || username.trim().isEmpty()) {
+                throw new IllegalArgumentException("Username cannot be null or empty");
+            }
 
+            User user = userRepository.findByUsername(username);
             if (user == null) {
                 throw new RuntimeException("User not found with username: " + username);
             }
 
-            // Update user fields
-            user.setFullName(userUpdateDTO.getFullName());
-            user.setContactNo(userUpdateDTO.getContactNo());
-            user.setEmail(userUpdateDTO.getEmail());
-            user.setAddress(userUpdateDTO.getAddress());
+            // Update user fields only if they are provided and not empty
+            if (userUpdateDTO.getFullName() != null && !userUpdateDTO.getFullName().trim().isEmpty()) {
+                user.setFullName(userUpdateDTO.getFullName().trim());
+            }
+
+            if (userUpdateDTO.getContactNo() != null && !userUpdateDTO.getContactNo().trim().isEmpty()) {
+                user.setContactNo(userUpdateDTO.getContactNo().trim());
+            }
+
+            if (userUpdateDTO.getEmail() != null && !userUpdateDTO.getEmail().trim().isEmpty()) {
+                // Check if email is being changed and if new email already exists
+                if (!user.getEmail().equals(userUpdateDTO.getEmail().trim())) {
+                    User existingUser = userRepository.findByEmail(userUpdateDTO.getEmail().trim());
+                    if (existingUser != null && !existingUser.getUserId().equals(user.getUserId())) {
+                        throw new IllegalArgumentException("Email already exists");
+                    }
+                }
+                user.setEmail(userUpdateDTO.getEmail().trim());
+            }
+
+            if (userUpdateDTO.getAddress() != null && !userUpdateDTO.getAddress().trim().isEmpty()) {
+                user.setAddress(userUpdateDTO.getAddress().trim());
+            }
 
             // Update password if provided
-            if (userUpdateDTO.getPassword() != null && !userUpdateDTO.getPassword().isEmpty()) {
+            if (userUpdateDTO.getPassword() != null && !userUpdateDTO.getPassword().trim().isEmpty()) {
                 System.out.println("Updating password for user: " + username);
                 user.setPassword(passwordEncoder.encode(userUpdateDTO.getPassword()));
             }
@@ -119,7 +163,12 @@ public class UserServiceImpl implements UserService {
     public User findByUsername(String username) {
         try {
             System.out.println("Finding user by username: " + username);
-            User user = userRepository.findByUsername(username);
+
+            if (username == null || username.trim().isEmpty()) {
+                throw new IllegalArgumentException("Username cannot be null or empty");
+            }
+
+            User user = userRepository.findByUsername(username.trim());
 
             if (user != null) {
                 System.out.println("User found: " + user.getFullName());
@@ -136,35 +185,47 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
     @Override
     public List<UserDTO> searchUsers(String fullName) {
         List<User> users = userRepository.findByFullName(fullName);
         List<UserDTO> userDTOs = new ArrayList<>();
         for (User user : users) {
             UserDTO dto = modelMapper.map(user, UserDTO.class);
+            dto.setPassword(null); // Don't include password
             userDTOs.add(dto);
         }
         return userDTOs;
     }
+
     @Override
     public List<UserDTO> searchUsersByRole(String role) {
         Role roleEnum = Role.valueOf(role.toUpperCase());
-        List<User> users = userRepository.findByRole(roleEnum);// custom method Find users by role
+        List<User> users = userRepository.findByRole(roleEnum);
         return users.stream()
-                .map(entity -> modelMapper.map(entity, UserDTO.class))
+                .map(entity -> {
+                    UserDTO dto = modelMapper.map(entity, UserDTO.class);
+                    dto.setPassword(null); // Don't include password
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
 
+    @Override
     public String verify(UserDTO user) {
+        try {
+            Authentication authenticate = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
+            );
 
-        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+            if (authenticate.isAuthenticated()) {
+                return jwtService.generateToken(user.getUsername());
+            }
 
-        if (authenticate.isAuthenticated())
-            return jwtService.generateToken(user.getUsername());
-
-        return "User is not authenticated";
-
+            return "User is not authenticated";
+        } catch (Exception ex) {
+            System.err.println("Authentication failed: " + ex.getMessage());
+            return "User is not authenticated";
+        }
     }
 
     @Override
@@ -172,7 +233,11 @@ public class UserServiceImpl implements UserService {
         Role roleEnum = Role.valueOf(role.toUpperCase());
         List<User> users = userRepository.findByRole(roleEnum);
         return users.stream()
-                .map(entity -> modelMapper.map(entity, UserDTO.class))
+                .map(entity -> {
+                    UserDTO dto = modelMapper.map(entity, UserDTO.class);
+                    dto.setPassword(null); // Don't include password
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
 }

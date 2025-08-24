@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface UserService {
 
-    List<UserDTO> getAllUsers(UserDTO usersDTO);
+    List<UserDTO> getAllUsers(); // Fixed: removed unnecessary parameter
     void addUsers(UserDTO usersDTO);
     String login(String email, String password);
     List<UserDTO> searchUsers(String fullName);
@@ -15,6 +15,5 @@ public interface UserService {
     String verify(UserDTO users);
     List<UserDTO> findUsersByRole(String role);
     User findByUsername(String username);
-
     User updateUser(UserDTO userUpdateDTO);
 }

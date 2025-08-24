@@ -1,20 +1,17 @@
 package com.icet.project.controller;
 
 import com.icet.project.model.dto.UserDTO;
-import com.icet.project.model.entity.LoginRequest;
 import com.icet.project.model.entity.User;
 import com.icet.project.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
+
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -23,33 +20,110 @@ import java.util.logging.Logger;
         methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
 public class UserController {
 
-    final UserService userService;
-    private PasswordEncoder passwordEncoder;
+    private final UserService userService;
 
     @GetMapping("/getAll")
-    public List<UserDTO> getAllUsers(UserDTO usersDTO){
-        return userService.getAllUsers(usersDTO);
+    public List<UserDTO> getAllUsers(){
+        return userService.getAllUsers();
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody UserDTO users){
-        return userService.verify(users);
+    public ResponseEntity<?> login(@RequestBody UserDTO users){
+        try {
+            String token = userService.verify(users);
+            if ("User is not authenticated".equals(token)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(Map.of("message", "Invalid credentials"));
+            }
+
+            // Return token and user info
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", token);
+            response.put("username", users.getUsername());
+
+            return ResponseEntity.ok(response);
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "Login failed: " + ex.getMessage()));
+        }
     }
 
-    // Add API prefix to match frontend call
-    @PutMapping("/api/users/update")
+    @PostMapping("/register")
+    public ResponseEntity<?> addUsers(@RequestBody UserDTO usersDTO){
+        try {
+            System.out.println("Received registration request: " + usersDTO);
+            userService.addUsers(usersDTO);
+            return ResponseEntity.ok(Map.of("message", "User registered successfully"));
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("message", "Registration failed: " + ex.getMessage()));
+        }
+    }
+
+    // Get user by username - this endpoint works correctly
+    @GetMapping("/{username}")
+    public ResponseEntity<?> getUserByUsername(@PathVariable String username) {
+        try {
+            System.out.println("=== GET USER REQUEST ===");
+            System.out.println("Username: " + username);
+
+            User user = userService.findByUsername(username);
+            if (user == null) {
+                System.out.println("User not found: " + username);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(Map.of("message", "User not found"));
+            }
+
+            // Convert to DTO and hide password
+            UserDTO userDTO = new UserDTO();
+            userDTO.setUserId(user.getUserId());
+            userDTO.setFullName(user.getFullName());
+            userDTO.setContactNo(user.getContactNo());
+            userDTO.setUsername(user.getUsername());
+            userDTO.setEmail(user.getEmail());
+            userDTO.setAddress(user.getAddress());
+            userDTO.setRole(user.getRole());
+            // Don't set password
+
+            System.out.println("User found and returned: " + user.getFullName());
+            return ResponseEntity.ok(userDTO);
+
+        } catch (Exception ex) {
+            System.err.println("Error fetching user: " + ex.getMessage());
+            ex.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "Internal server error: " + ex.getMessage()));
+        }
+    }
+
+    // Fixed update endpoint - simplified URL
+    @PutMapping("/update")
     public ResponseEntity<?> updateUserProfile(@RequestBody UserDTO userUpdateDTO) {
         try {
             System.out.println("Received update request for user: " + userUpdateDTO.getUsername());
 
+            // Validate required fields
+            if (userUpdateDTO.getUsername() == null || userUpdateDTO.getUsername().trim().isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(Map.of("message", "Username is required"));
+            }
+
             // Call service to update user
             User updatedUser = userService.updateUser(userUpdateDTO);
 
-            // Hide password in response
-            updatedUser.setPassword(null);
+            // Convert to DTO for response
+            UserDTO responseDTO = new UserDTO();
+            responseDTO.setUserId(updatedUser.getUserId());
+            responseDTO.setFullName(updatedUser.getFullName());
+            responseDTO.setContactNo(updatedUser.getContactNo());
+            responseDTO.setUsername(updatedUser.getUsername());
+            responseDTO.setEmail(updatedUser.getEmail());
+            responseDTO.setAddress(updatedUser.getAddress());
+            responseDTO.setRole(updatedUser.getRole());
+            // Don't include password
 
             System.out.println("User updated successfully: " + updatedUser.getUsername());
-            return ResponseEntity.ok(updatedUser);
+            return ResponseEntity.ok(responseDTO);
 
         } catch (Exception ex) {
             System.err.println("Error updating user: " + ex.getMessage());
@@ -60,48 +134,6 @@ public class UserController {
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(errorResponse);
-        }
-    }
-
-    // Keep the original update endpoint as well for backward compatibility
-    @PutMapping("/update")
-    public ResponseEntity<?> updateUserProfileOriginal(@RequestBody UserDTO userUpdateDTO) {
-        return updateUserProfile(userUpdateDTO);
-    }
-
-    @PostMapping("/register")
-    public ResponseEntity<?> addUsers(@RequestBody UserDTO usersDTO){
-        System.out.println("Received registration request: " + usersDTO);
-        System.out.println("Contact number received: " + usersDTO.getContactNo());
-        userService.addUsers(usersDTO);
-        return ResponseEntity.ok("User registered successfully");
-    }
-
-    @GetMapping("/{username}")
-    public ResponseEntity<?> getUserByUsername(@PathVariable String username) {
-        try {
-            System.out.println("=== GET USER REQUEST ===");
-            System.out.println("Username: " + username);
-            System.out.println("Request received successfully");
-
-            User user = userService.findByUsername(username);
-            if (user == null) {
-                System.out.println("User not found: " + username);
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(Map.of("message", "User not found"));
-            }
-
-            // Hide password in response
-            user.setPassword(null);
-
-            System.out.println("User found and returned: " + user.getFullName());
-            return ResponseEntity.ok(user);
-
-        } catch (Exception ex) {
-            System.err.println("Error fetching user: " + ex.getMessage());
-            ex.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("message", "Internal server error: " + ex.getMessage()));
         }
     }
 
@@ -122,7 +154,7 @@ public class UserController {
         return userService.findUsersByRole(role);
     }
 
-    // Add OPTIONS method handler for CORS preflight
+    // Handle OPTIONS requests for CORS
     @RequestMapping(method = RequestMethod.OPTIONS, value = "/**")
     public ResponseEntity<?> handleOptions() {
         return ResponseEntity.ok().build();
