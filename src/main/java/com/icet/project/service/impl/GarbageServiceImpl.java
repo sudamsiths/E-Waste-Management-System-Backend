@@ -5,6 +5,7 @@ import com.icet.project.model.entity.Garbage_DetailsEntity;
 import com.icet.project.repository.GarbageRepository;
 import com.icet.project.service.GarbageService;
 import com.icet.project.utill.Category;
+import com.icet.project.utill.Status;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,6 +34,10 @@ public class GarbageServiceImpl implements GarbageService {
     @Override
     public void addGarbage(Garbage_DetailsDTO garbageDetails) {
         Garbage_DetailsEntity garbageEntity = modelMapper.map(garbageDetails, Garbage_DetailsEntity.class);
+        // Set default status if null
+        if (garbageEntity.getStatus() == null) {
+            garbageEntity.setStatus(Status.PENDING);
+        }
         garbageRepository.save(garbageEntity);
     }
 
@@ -58,6 +63,11 @@ public class GarbageServiceImpl implements GarbageService {
 
                 // Set the image path in the DTO
                 garbageDetails.setImage(fileName);
+            }
+
+            // Set default status if null
+            if (garbageDetails.getStatus() == null) {
+                garbageDetails.setStatus(Status.PENDING);
             }
 
             // Save the garbage details with the image path

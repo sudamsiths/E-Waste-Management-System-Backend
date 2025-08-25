@@ -1,6 +1,7 @@
 package com.icet.project.model.entity;
 
 import com.icet.project.utill.Category;
+import com.icet.project.utill.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +25,8 @@ public class Garbage_DetailsEntity {
     private Integer points;
     private String location;
     private Double weight;
+    @Enumerated(EnumType.STRING)
+    private Status status;
     private String description;
 
 

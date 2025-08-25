@@ -4,6 +4,7 @@ import com.icet.project.model.dto.Garbage_DetailsDTO;
 import com.icet.project.model.entity.Garbage_DetailsEntity;
 import com.icet.project.service.GarbageService;
 import com.icet.project.utill.Category;
+import com.icet.project.utill.Status;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +37,7 @@ public class GarbageController {
         garbageDTO.setLocation(location);
         garbageDTO.setWeight(weight);
         garbageDTO.setDescription(description);
+        garbageDTO.setStatus(Status.PENDING); // Set default status explicitly
 
         garbageService.addGarbageWithImage(garbageDTO, image);
     }

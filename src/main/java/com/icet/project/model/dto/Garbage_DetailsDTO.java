@@ -1,6 +1,7 @@
 package com.icet.project.model.dto;
 
 import com.icet.project.utill.Category;
+import com.icet.project.utill.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,5 +19,6 @@ public class Garbage_DetailsDTO {
     private Integer points;
     private String location;
     private Double weight;
+    private Status status;
     private String description;
 }
