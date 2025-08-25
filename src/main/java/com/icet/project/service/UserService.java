@@ -16,4 +16,6 @@ public interface UserService {
     List<UserDTO> findUsersByRole(String role);
     User findByUsername(String username);
     User updateUser(UserDTO userUpdateDTO);
+
+    void deleteUser(String username);
 }

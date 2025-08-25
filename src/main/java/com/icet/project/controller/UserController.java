@@ -159,4 +159,14 @@ public class UserController {
     public ResponseEntity<?> handleOptions() {
         return ResponseEntity.ok().build();
     }
+    @DeleteMapping("/delete/{username}")
+    public ResponseEntity<?> deleteUser(@PathVariable String username) {
+        try {
+            userService.deleteUser(username);
+            return ResponseEntity.ok(Map.of("message", "User deleted successfully"));
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "Deletion failed: " + ex.getMessage()));
+        }
+    }
 }

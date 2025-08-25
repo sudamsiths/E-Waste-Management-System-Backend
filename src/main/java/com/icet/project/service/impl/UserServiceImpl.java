@@ -151,6 +151,30 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void deleteUser(String username) {
+        try {
+            System.out.println("Deleting user: " + username);
+
+            if (username == null || username.trim().isEmpty()) {
+                throw new IllegalArgumentException("Username cannot be null or empty");
+            }
+
+            User user = userRepository.findByUsername(username.trim());
+            if (user == null) {
+                throw new RuntimeException("User not found with username: " + username);
+            }
+
+            userRepository.delete(user);
+            System.out.println("User deleted successfully: " + username);
+
+        } catch (Exception ex) {
+            System.err.println("Error deleting user: " + ex.getMessage());
+            ex.printStackTrace();
+            throw new RuntimeException("Failed to delete user: " + ex.getMessage());
+        }
+    }
+
+    @Override
     public User findByUsername(String username) {
         try {
             System.out.println("Finding user by username: " + username);
