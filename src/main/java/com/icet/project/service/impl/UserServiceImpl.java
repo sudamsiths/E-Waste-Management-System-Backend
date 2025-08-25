@@ -34,7 +34,6 @@ public class UserServiceImpl implements UserService {
         List<UserDTO> userDTO = new ArrayList<>();
         for (User userEntity : all) {
             UserDTO map = modelMapper.map(userEntity, UserDTO.class);
-            // Don't include password in response
             map.setPassword(null);
             userDTO.add(map);
         }
@@ -44,7 +43,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addUsers(UserDTO usersDTO) {
         try {
-            // Validate required fields
             if (usersDTO.getUsername() == null || usersDTO.getUsername().trim().isEmpty()) {
                 throw new IllegalArgumentException("Username is required");
             }
@@ -55,12 +53,10 @@ public class UserServiceImpl implements UserService {
                 throw new IllegalArgumentException("Email is required");
             }
 
-            // Check if username already exists
             if (userRepository.findByUsername(usersDTO.getUsername()) != null) {
                 throw new IllegalArgumentException("Username already exists");
             }
 
-            // Check if email already exists
             if (userRepository.findByEmail(usersDTO.getEmail()) != null) {
                 throw new IllegalArgumentException("Email already exists");
             }
@@ -68,7 +64,6 @@ public class UserServiceImpl implements UserService {
             User user = modelMapper.map(usersDTO, User.class);
             user.setPassword(passwordEncoder.encode(usersDTO.getPassword()));
 
-            // Set default role if not provided
             if (user.getRole() == null) {
                 user.setRole(Role.CUSTOMER);
             }
@@ -105,7 +100,6 @@ public class UserServiceImpl implements UserService {
         try {
             System.out.println("Updating user: " + userUpdateDTO.getUsername());
 
-            // Find user by username
             String username = userUpdateDTO.getUsername();
             if (username == null || username.trim().isEmpty()) {
                 throw new IllegalArgumentException("Username cannot be null or empty");
@@ -116,7 +110,6 @@ public class UserServiceImpl implements UserService {
                 throw new RuntimeException("User not found with username: " + username);
             }
 
-            // Update user fields only if they are provided and not empty
             if (userUpdateDTO.getFullName() != null && !userUpdateDTO.getFullName().trim().isEmpty()) {
                 user.setFullName(userUpdateDTO.getFullName().trim());
             }
@@ -126,7 +119,6 @@ public class UserServiceImpl implements UserService {
             }
 
             if (userUpdateDTO.getEmail() != null && !userUpdateDTO.getEmail().trim().isEmpty()) {
-                // Check if email is being changed and if new email already exists
                 if (!user.getEmail().equals(userUpdateDTO.getEmail().trim())) {
                     User existingUser = userRepository.findByEmail(userUpdateDTO.getEmail().trim());
                     if (existingUser != null && !existingUser.getUserId().equals(user.getUserId())) {
@@ -140,7 +132,6 @@ public class UserServiceImpl implements UserService {
                 user.setAddress(userUpdateDTO.getAddress().trim());
             }
 
-            // Update password if provided
             if (userUpdateDTO.getPassword() != null && !userUpdateDTO.getPassword().trim().isEmpty()) {
                 System.out.println("Updating password for user: " + username);
                 user.setPassword(passwordEncoder.encode(userUpdateDTO.getPassword()));
