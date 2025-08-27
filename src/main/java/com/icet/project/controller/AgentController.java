@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/agent")
+@CrossOrigin
 @RequiredArgsConstructor
 
 public class AgentController {
@@ -20,6 +21,7 @@ public class AgentController {
 
     @GetMapping("/getAll")
     public List<AgentDTO> getAllAgents(AgentDTO agentDTO) {
+        System.out.println("Fetching all agents with filter: " + agentDTO);
         return agentService.getAllAgents(agentDTO);
     }
 
