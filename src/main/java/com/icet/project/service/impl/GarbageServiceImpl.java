@@ -9,6 +9,8 @@ import com.icet.project.utill.Status;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,7 +18,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -110,5 +114,46 @@ public class GarbageServiceImpl implements GarbageService {
     public Garbage_DetailsEntity getGarbageById(Long id) {
         return garbageRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Garbage with id " + id + " does not exist."));
+    }
+
+    @Override
+    public List<Garbage_DetailsEntity> getLatestGarbage(int limit) {
+        return garbageRepository.findAll(PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "id"))).getContent();
+    }
+
+    @Override
+    public void UpdateGarbageStatus(Long id, Status status) {
+        Garbage_DetailsEntity garbage = garbageRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Garbage with id " + id + " does not exist."));
+        garbage.setStatus(status);
+        garbageRepository.save(garbage);
+    }
+
+    @Override
+    public List<Garbage_DetailsEntity> getGarbageByStatus(Status status) {
+        // Using stream to filter by status
+        return garbageRepository.findAll().stream()
+                .filter(garbage -> garbage.getStatus() == status)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Map<Status, Long> getCountByStatus() {
+        Map<Status, Long> counts = new EnumMap<>(Status.class);
+        // Initialize all status counts to 0
+        for (Status status : Status.values()) {
+            counts.put(status, 0L);
+        }
+
+        // Count items by status
+        List<Garbage_DetailsEntity> allGarbage = garbageRepository.findAll();
+        for (Garbage_DetailsEntity garbage : allGarbage) {
+            Status status = garbage.getStatus();
+            if (status != null) {
+                counts.put(status, counts.getOrDefault(status, 0L) + 1);
+            }
+        }
+
+        return counts;
     }
 }

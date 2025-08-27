@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/garbage")
@@ -67,4 +68,53 @@ public class GarbageController {
         return garbageService.getGarbageById(id);
     }
 
+    @GetMapping("/GetCount/Garbages")
+    public Long GetAllGarbageCount(){
+        return garbageService.getAllGarbage().stream().count();
+    }
+
+    @GetMapping("/GetCount/GarbagesKG")
+    public Long GetAllGarbageCountKG(){
+        return garbageService.getAllGarbage().stream().mapToLong(g -> g.getWeight().longValue()).sum();
+    }
+
+    @GetMapping("/latest")
+    public List<Garbage_DetailsEntity> getLatestGarbage(@RequestParam(defaultValue = "5") int limit) {
+        return garbageService.getLatestGarbage(limit);
+    }
+
+    @PutMapping("/updateStatus/{id}")
+    public void updateGarbageStatus(@PathVariable Long id, @RequestParam Status status) {
+        garbageService.UpdateGarbageStatus(id, status);
+    }
+
+    @GetMapping("/byStatus/{status}")
+    public List<Garbage_DetailsEntity> getGarbageByStatus(@PathVariable Status status) {
+        return garbageService.getGarbageByStatus(status);
+    }
+
+    @GetMapping("/countByStatus")
+    public Map<Status, Long> getCountByStatus() {
+        return garbageService.getCountByStatus();
+    }
+
+    @PutMapping("/{id}/approve")
+    public void approveGarbage(@PathVariable Long id) {
+        garbageService.UpdateGarbageStatus(id, Status.APPROVED);
+    }
+
+    @PutMapping("/{id}/reject")
+    public void rejectGarbage(@PathVariable Long id) {
+        garbageService.UpdateGarbageStatus(id, Status.REJECTED);
+    }
+
+    @PutMapping("/{id}/markInProgress")
+    public void markGarbageInProgress(@PathVariable Long id) {
+        garbageService.UpdateGarbageStatus(id, Status.IN_PROGRESS);
+    }
+
+    @PutMapping("/{id}/complete")
+    public void completeGarbage(@PathVariable Long id) {
+        garbageService.UpdateGarbageStatus(id, Status.COMPLETED);
+    }
 }
