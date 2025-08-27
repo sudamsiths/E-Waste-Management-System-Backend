@@ -154,7 +154,6 @@ public class UserController {
         return userService.findUsersByRole(role);
     }
 
-    // Handle OPTIONS requests for CORS
     @RequestMapping(method = RequestMethod.OPTIONS, value = "/**")
     public ResponseEntity<?> handleOptions() {
         return ResponseEntity.ok().build();
