@@ -52,7 +52,7 @@ public class GarbageController {
         return garbageService.searchGarbage(title);
     }
 
-    @DeleteMapping("/delete/{title}")
+    @DeleteMapping("/delete/{id}")
     public void deleteGarbage(@PathVariable Long id) {
         garbageService.deleteGarbage(id);
     }
