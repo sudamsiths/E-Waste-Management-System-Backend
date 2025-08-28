@@ -21,4 +21,6 @@ public interface GarbageService {
     void UpdateGarbageStatus(Long id, Status status);
     List<Garbage_DetailsEntity> getGarbageByStatus(Status status);
     Map<Status, Long> getCountByStatus();
+
+    List<Garbage_DetailsEntity> getGarbageByUserName(String userName);
 }

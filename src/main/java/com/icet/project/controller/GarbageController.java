@@ -21,8 +21,11 @@ public class GarbageController {
 
     final GarbageService garbageService;
 
+
+    // Handles multipart/form-data
     @PostMapping(value = "/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void addGarbage(
+            @RequestParam("userName") String userName,
             @RequestParam("title") String title,
             @RequestParam("category") Category category,
             @RequestParam(value = "image", required = false) MultipartFile image,
@@ -32,15 +35,26 @@ public class GarbageController {
             @RequestParam(value = "description", required = false) String description) {
 
         Garbage_DetailsDTO garbageDTO = new Garbage_DetailsDTO();
+        garbageDTO.setUserName(userName);
         garbageDTO.setTitle(title);
         garbageDTO.setCategory(category);
+        garbageDTO.setSubmissionDate(new java.util.Date()); // Set current date
         garbageDTO.setPoints(points);
         garbageDTO.setLocation(location);
         garbageDTO.setWeight(weight);
         garbageDTO.setDescription(description);
-        garbageDTO.setStatus(Status.PENDING); // Set default status explicitly
+        garbageDTO.setStatus(Status.PENDING);
 
         garbageService.addGarbageWithImage(garbageDTO, image);
+    }
+
+    @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void addGarbageJson(@RequestBody Garbage_DetailsDTO garbageDTO) {
+        if (garbageDTO.getSubmissionDate() == null) {
+            garbageDTO.setSubmissionDate(new java.util.Date());
+        }
+        garbageDTO.setStatus(Status.PENDING);
+        garbageService.addGarbageWithImage(garbageDTO, null);
     }
 
     @GetMapping("/getAll")
@@ -76,6 +90,11 @@ public class GarbageController {
     @GetMapping("/GetCount/GarbagesKG")
     public Long GetAllGarbageCountKG(){
         return garbageService.getAllGarbage().stream().mapToLong(g -> g.getWeight().longValue()).sum();
+    }
+
+    @GetMapping("/GetCount/Pending")
+    public Long GetAllPendingGarbageCount() {
+        return garbageService.getGarbageByStatus(Status.PENDING).stream().count();
     }
 
     @GetMapping("/latest")
@@ -116,5 +135,9 @@ public class GarbageController {
     @PutMapping("/{id}/complete")
     public void completeGarbage(@PathVariable Long id) {
         garbageService.UpdateGarbageStatus(id, Status.COMPLETED);
+    }
+    @GetMapping("/Garbage/SearchBy/{userName}")
+    public List<Garbage_DetailsEntity> getGarbageByUserName(@PathVariable String userName) {
+        return garbageService.getGarbageByUserName(userName);
     }
 }

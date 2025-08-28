@@ -38,7 +38,6 @@ public class GarbageServiceImpl implements GarbageService {
     @Override
     public void addGarbage(Garbage_DetailsDTO garbageDetails) {
         Garbage_DetailsEntity garbageEntity = modelMapper.map(garbageDetails, Garbage_DetailsEntity.class);
-        // Set default status if null
         if (garbageEntity.getStatus() == null) {
             garbageEntity.setStatus(Status.PENDING);
         }
@@ -155,5 +154,10 @@ public class GarbageServiceImpl implements GarbageService {
         }
 
         return counts;
+    }
+
+    @Override
+    public List<Garbage_DetailsEntity> getGarbageByUserName(String userName) {
+        return garbageRepository.findByUserName(userName);
     }
 }

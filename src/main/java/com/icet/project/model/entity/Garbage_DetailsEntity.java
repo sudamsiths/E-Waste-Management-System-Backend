@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,11 +20,13 @@ public class Garbage_DetailsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private Long id;
+    private String userName;
     private String title;
     @Enumerated(EnumType.STRING)
     private Category category;
     private String image;
     private Integer points;
+    private Date SubmissionDate;
     private String location;
     private Double weight;
     @Enumerated(EnumType.STRING)

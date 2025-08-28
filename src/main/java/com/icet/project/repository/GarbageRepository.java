@@ -16,4 +16,6 @@ public interface GarbageRepository extends JpaRepository<Garbage_DetailsEntity,L
     List<Garbage_DetailsEntity> findByCategory(Category value);
 
     List<Garbage_DetailsEntity> findByStatus(Status status);
+
+    List<Garbage_DetailsEntity> findByUserName(String userName);
 }
