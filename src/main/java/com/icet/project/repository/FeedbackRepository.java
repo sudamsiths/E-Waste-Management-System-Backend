@@ -11,5 +11,5 @@ public interface FeedbackRepository extends JpaRepository <FeedbackEntity , Long
 
     List<FeedbackEntity> findByFeedbackType(FeedbackType value);
 
-    List<FeedbackEntity> findByFeedbackTypeAndStatus(FeedbackType value, String status);
+//    List<FeedbackEntity> findByFeedbackTypeAndStatus(FeedbackType value, String status);
 }

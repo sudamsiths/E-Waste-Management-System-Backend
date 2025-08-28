@@ -13,7 +13,6 @@ import lombok.ToString;
 public class FeedbackDTO {
     private Long feedbackId;
     private String customerName;
-    private String email;
     private String submittedAt;
     private FeedbackType feedbackType;
     private String message;

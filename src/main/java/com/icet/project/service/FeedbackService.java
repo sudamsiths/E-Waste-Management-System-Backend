@@ -12,5 +12,5 @@ public interface FeedbackService {
     void deleteFeedback(Long id);
     List<FeedbackDTO> getFeedbackByType(String feedbackType);
 
-    List<FeedbackDTO> getFeedbackByTypeAndStatus(String feedbackType, String status);
+//    List<FeedbackDTO> getFeedbackByTypeAndStatus(String feedbackType, String status);
 }

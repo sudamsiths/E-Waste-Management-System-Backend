@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/feedback")
 @RequiredArgsConstructor
-
+@CrossOrigin
 public class FeedbackController {
 
     final FeedbackService feedbackService;
@@ -41,8 +41,8 @@ public class FeedbackController {
     public List<FeedbackDTO> getTypeFeedback(@PathVariable("feedbackType") String feedbackType ){
         return feedbackService.getFeedbackByType(feedbackType);
     }
-    @GetMapping("/search/By-FeedbackTypeAndStatus/{feedbackType}/{status}")
-    public List<FeedbackDTO> getTypeAndStatusFeedback(@PathVariable("feedbackType") String feedbackType, @PathVariable("status") String status) {
-        return feedbackService.getFeedbackByTypeAndStatus(feedbackType, status);
-    }
+//    @GetMapping("/search/By-FeedbackTypeAndStatus/{feedbackType}/{status}")
+//    public List<FeedbackDTO> getTypeAndStatusFeedback(@PathVariable("feedbackType") String feedbackType, @PathVariable("status") String status) {
+//        return feedbackService.getFeedbackByTypeAndStatus(feedbackType, status);
+//    }
 }

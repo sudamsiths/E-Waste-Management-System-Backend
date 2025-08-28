@@ -20,7 +20,6 @@ public class FeedbackEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private Long feedbackId;
     private String customerName;
-    private String email;
     private Date submittedAt;
     @Enumerated(EnumType.STRING)
     private FeedbackType feedbackType;

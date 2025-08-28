@@ -47,12 +47,12 @@ public class FeedbackServiceImpl implements FeedbackService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<FeedbackDTO> getFeedbackByTypeAndStatus(String feedbackType, String status) {
-        FeedbackType value = FeedbackType.valueOf(feedbackType.toUpperCase());
-        List<FeedbackEntity> typeAndStatus = feedbackRepository.findByFeedbackTypeAndStatus(value, status); // custom method Find feedback by type and status
-        return typeAndStatus.stream()
-                .map(entity -> modelMapper.map(entity, FeedbackDTO.class))
-                .collect(Collectors.toList());
-    }
+//    @Override
+//    public List<FeedbackDTO> getFeedbackByTypeAndStatus(String feedbackType, String status) {
+//        FeedbackType value = FeedbackType.valueOf(feedbackType.toUpperCase());
+//        List<FeedbackEntity> typeAndStatus = feedbackRepository.findByFeedbackTypeAndStatus(value, status); // custom method Find feedback by type and status
+//        return typeAndStatus.stream()
+//                .map(entity -> modelMapper.map(entity, FeedbackDTO.class))
+//                .collect(Collectors.toList());
+//    }
 }
