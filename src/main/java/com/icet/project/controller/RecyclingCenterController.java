@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/recycling-centers")
 @RequiredArgsConstructor
+@CrossOrigin
 public class RecyclingCenterController {
 
     final Recyclecenter recyclingCenterService;
@@ -30,12 +31,12 @@ public class RecyclingCenterController {
         return recyclingCenterService.createCenter(center);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/Update/{id}")
     public Recycling_CenterEntity updateCenter(@PathVariable Long id, @RequestBody Recycling_CenterEntity center) {
         return recyclingCenterService.updateCenter(id, center);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/Delete/{id}")
     public void deleteCenter(@PathVariable Long id) {
         recyclingCenterService.deleteCenter(id);
     }
@@ -44,8 +45,5 @@ public class RecyclingCenterController {
     public List<Recycling_CenterDTO> getAllLocationCenters(@PathVariable String location ){
         return recyclingCenterService.getAllLocationcenters(location);
     }
-    @GetMapping("/search/by-type/{type}")
-    public List<Recycling_CenterDTO> getAllTypeCenters(@PathVariable String type) {
-        return recyclingCenterService.getAllTypecenters(type);
-    }
+
 }

@@ -59,11 +59,4 @@ public class RecyclingCenterServiceImpl implements Recyclecenter {
                 .toList();
     }
 
-    @Override
-    public List<Recycling_CenterDTO> getAllTypecenters(String type) {
-        List<Recycling_CenterEntity> recyclingCenterEntities = recyclingCenterRepository.findByType(type);
-        return recyclingCenterEntities.stream()
-                .map(entity -> modelMapper.map(entity, Recycling_CenterDTO.class))
-                .toList();
-    }
 }
