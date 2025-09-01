@@ -32,6 +32,7 @@ public class Garbage_DetailsEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
     private String description;
+    private Long AgentID;
 
 
 //    @ManyToOne

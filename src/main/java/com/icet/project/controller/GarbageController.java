@@ -22,7 +22,6 @@ public class GarbageController {
     final GarbageService garbageService;
 
 
-    // Handles multipart/form-data
     @PostMapping(value = "/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void addGarbage(
             @RequestParam("userName") String userName,
@@ -32,18 +31,21 @@ public class GarbageController {
             @RequestParam(value = "points", required = false) Integer points,
             @RequestParam(value = "location", required = false) String location,
             @RequestParam(value = "weight", required = false) Double weight,
-            @RequestParam(value = "description", required = false) String description) {
+            @RequestParam(value = "description", required = false) String description)
+
+    {
 
         Garbage_DetailsDTO garbageDTO = new Garbage_DetailsDTO();
         garbageDTO.setUserName(userName);
         garbageDTO.setTitle(title);
         garbageDTO.setCategory(category);
-        garbageDTO.setSubmissionDate(new java.util.Date()); // Set current date
+        garbageDTO.setSubmissionDate(new java.util.Date());
         garbageDTO.setPoints(points);
         garbageDTO.setLocation(location);
         garbageDTO.setWeight(weight);
         garbageDTO.setDescription(description);
         garbageDTO.setStatus(Status.PENDING);
+        garbageDTO.setAgentID(null);
 
         garbageService.addGarbageWithImage(garbageDTO, image);
     }
