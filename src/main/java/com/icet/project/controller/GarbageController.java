@@ -31,9 +31,7 @@ public class GarbageController {
             @RequestParam(value = "points", required = false) Integer points,
             @RequestParam(value = "location", required = false) String location,
             @RequestParam(value = "weight", required = false) Double weight,
-            @RequestParam(value = "description", required = false) String description)
-
-    {
+            @RequestParam(value = "description", required = false) String description) {
 
         Garbage_DetailsDTO garbageDTO = new Garbage_DetailsDTO();
         garbageDTO.setUserName(userName);
@@ -85,12 +83,12 @@ public class GarbageController {
     }
 
     @GetMapping("/GetCount/Garbages")
-    public Long GetAllGarbageCount(){
+    public Long GetAllGarbageCount() {
         return garbageService.getAllGarbage().stream().count();
     }
 
     @GetMapping("/GetCount/GarbagesKG")
-    public Long GetAllGarbageCountKG(){
+    public Long GetAllGarbageCountKG() {
         return garbageService.getAllGarbage().stream().mapToLong(g -> g.getWeight().longValue()).sum();
     }
 
@@ -138,6 +136,7 @@ public class GarbageController {
     public void completeGarbage(@PathVariable Long id) {
         garbageService.UpdateGarbageStatus(id, Status.COMPLETED);
     }
+
     @GetMapping("/Garbage/SearchBy/{userName}")
     public List<Garbage_DetailsEntity> getGarbageByUserName(@PathVariable String userName) {
         return garbageService.getGarbageByUserName(userName);
