@@ -79,6 +79,16 @@ public class AgentServiceImpl implements AgentService {
 
     }
 
+    @Override
+    public List<String> getAllAgentsNames() {
+        List<AgentEntity> all = agentRepository.findAll();
+        List<String> names = new ArrayList<>();
+        for (AgentEntity agentEntity : all) {
+            names.add(agentEntity.getFullName());
+        }
+        return names;
+    }
+
     public List<AgentDTO> getAgentById(String fullName) {
         Optional<AgentEntity> byName = agentRepository.findByFullName(fullName);
         List<AgentDTO> agentDTOS = new ArrayList<>();

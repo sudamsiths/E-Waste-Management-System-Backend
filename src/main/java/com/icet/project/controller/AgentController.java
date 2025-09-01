@@ -24,6 +24,10 @@ public class AgentController {
         System.out.println("Fetching all agents with filter: " + agentDTO);
         return agentService.getAllAgents(agentDTO);
     }
+    @GetMapping("/GetAll/AgentsName")
+    public List<String> getAllAgentsNames() {
+        return agentService.getAllAgentsNames();
+    }
 
     @GetMapping("/search/{fullName}")
     public List<AgentDTO> getAgentById(@PathVariable String fullName) {
