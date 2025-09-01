@@ -34,17 +34,4 @@ public class Garbage_DetailsEntity {
     private String description;
     private Long AgentID;
 
-
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private UsersEntity user;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "agent_id")
-//    private AgentEntity assignedAgent;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "recycling_center_id")
-//    private Recycling_CenterEntity recyclingCenter;
-
 }
