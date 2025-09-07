@@ -43,7 +43,7 @@ public class GarbageController {
         garbageDTO.setWeight(weight);
         garbageDTO.setDescription(description);
         garbageDTO.setStatus(Status.PENDING);
-        garbageDTO.setAgentID(null);
+        garbageDTO.setAgentName(null);
 
         garbageService.addGarbageWithImage(garbageDTO, image);
     }

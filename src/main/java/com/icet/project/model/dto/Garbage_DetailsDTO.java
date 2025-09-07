@@ -25,5 +25,5 @@ public class Garbage_DetailsDTO {
     private Double weight;
     private Status status;
     private String description;
-    private Long AgentID;
+    private String AgentName;
 }
