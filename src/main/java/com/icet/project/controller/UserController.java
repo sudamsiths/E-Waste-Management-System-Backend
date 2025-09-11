@@ -4,6 +4,7 @@ import com.icet.project.model.dto.UserDTO;
 import com.icet.project.model.entity.User;
 import com.icet.project.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +16,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:5173"},
-        allowedHeaders = "*",
-        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
+@CrossOrigin
+@Slf4j
 public class UserController {
 
     private final UserService userService;
@@ -40,7 +40,7 @@ public class UserController {
             Map<String, Object> response = new HashMap<>();
             response.put("token", token);
             response.put("username", users.getUsername());
-
+            log.info("User logged in successfully: " + users.getUsername());
             return ResponseEntity.ok(response);
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -52,6 +52,7 @@ public class UserController {
     public ResponseEntity<?> addUsers(@RequestBody UserDTO usersDTO){
         try {
             System.out.println("Received registration request: " + usersDTO);
+            log.info("Attempting to register user: " + usersDTO.getUsername());
             userService.addUsers(usersDTO);
             return ResponseEntity.ok(Map.of("message", "User registered successfully"));
         } catch (Exception ex) {
@@ -60,13 +61,10 @@ public class UserController {
         }
     }
 
-    // Get user by username - this endpoint works correctly
+    // Get user by username
     @GetMapping("/{username}")
     public ResponseEntity<?> getUserByUsername(@PathVariable String username) {
         try {
-            System.out.println("=== GET USER REQUEST ===");
-            System.out.println("Username: " + username);
-
             User user = userService.findByUsername(username);
             if (user == null) {
                 System.out.println("User not found: " + username);
@@ -96,7 +94,7 @@ public class UserController {
         }
     }
 
-    // Fixed update endpoint - simplified URL
+    // Fixed update
     @PutMapping("/update")
     public ResponseEntity<?> updateUserProfile(@RequestBody UserDTO userUpdateDTO) {
         try {
@@ -120,7 +118,6 @@ public class UserController {
             responseDTO.setEmail(updatedUser.getEmail());
             responseDTO.setAddress(updatedUser.getAddress());
             responseDTO.setRole(updatedUser.getRole());
-            // Don't include password
 
             System.out.println("User updated successfully: " + updatedUser.getUsername());
             return ResponseEntity.ok(responseDTO);
