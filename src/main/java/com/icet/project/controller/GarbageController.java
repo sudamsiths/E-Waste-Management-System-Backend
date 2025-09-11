@@ -31,7 +31,8 @@ public class GarbageController {
             @RequestParam(value = "points", required = false) Integer points,
             @RequestParam(value = "location", required = false) String location,
             @RequestParam(value = "weight", required = false) Double weight,
-            @RequestParam(value = "description", required = false) String description) {
+            @RequestParam(value = "description", required = false) String description,
+            @RequestParam(value = "AgentName", required = false) String AgentName) {
 
         Garbage_DetailsDTO garbageDTO = new Garbage_DetailsDTO();
         garbageDTO.setUserName(userName);
@@ -43,7 +44,7 @@ public class GarbageController {
         garbageDTO.setWeight(weight);
         garbageDTO.setDescription(description);
         garbageDTO.setStatus(Status.PENDING);
-        garbageDTO.setAgentName(null);
+        garbageDTO.setAgentName(AgentName);
 
         garbageService.addGarbageWithImage(garbageDTO, image);
     }
@@ -53,7 +54,12 @@ public class GarbageController {
         if (garbageDTO.getSubmissionDate() == null) {
             garbageDTO.setSubmissionDate(new java.util.Date());
         }
-        garbageDTO.setStatus(Status.PENDING);
+        if (garbageDTO.getStatus() == null) {
+            garbageDTO.setStatus(Status.PENDING);
+        }
+        if (garbageDTO.getAgentName() == null) {
+            garbageDTO.setAgentName("Not Assigned");
+        }
         garbageService.addGarbageWithImage(garbageDTO, null);
     }
 
@@ -102,9 +108,9 @@ public class GarbageController {
         return garbageService.getLatestGarbage(limit);
     }
 
-    @PutMapping("/updateStatus/{id}")
-    public void updateGarbageStatus(@PathVariable Long id, @RequestParam Status status) {
-        garbageService.UpdateGarbageStatus(id, status);
+    @PutMapping("/updateGarbage/{id}")
+    public void updateGarbageStatus(@PathVariable Long id, @RequestBody Garbage_DetailsDTO garbageDetailsDTO) {
+        garbageService.UpdateGarbageDetails(id, garbageDetailsDTO);
     }
 
     @GetMapping("/byStatus/{status}")

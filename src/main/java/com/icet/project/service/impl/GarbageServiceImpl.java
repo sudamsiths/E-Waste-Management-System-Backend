@@ -41,6 +41,10 @@ public class GarbageServiceImpl implements GarbageService {
         if (garbageEntity.getStatus() == null) {
             garbageEntity.setStatus(Status.PENDING);
         }
+        if (garbageEntity.getSubmissionDate() == null) {
+            garbageEntity.setSubmissionDate(new java.util.Date());
+        }
+
         garbageRepository.save(garbageEntity);
     }
 
@@ -159,5 +163,13 @@ public class GarbageServiceImpl implements GarbageService {
     @Override
     public List<Garbage_DetailsEntity> getGarbageByUserName(String userName) {
         return garbageRepository.findByUserName(userName);
+    }
+
+    @Override
+    public void UpdateGarbageDetails(Long id, Garbage_DetailsDTO garbageDetailsDTO) {
+        garbageRepository.findById(id);
+        Garbage_DetailsEntity updatedGarbage = modelMapper.map(garbageDetailsDTO, Garbage_DetailsEntity.class);
+        updatedGarbage.setId(id);
+        garbageRepository.save(updatedGarbage);
     }
 }
