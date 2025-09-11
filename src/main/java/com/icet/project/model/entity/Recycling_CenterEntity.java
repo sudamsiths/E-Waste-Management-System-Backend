@@ -23,7 +23,5 @@ public class Recycling_CenterEntity {
     private Integer contactNo;
     private String contactPerson;
     private String email;
-//
-//    @OneToMany(mappedBy = "recyclingCenter", cascade = CascadeType.ALL)
-//    private List<Garbage_DetailsEntity> recycledGarbage;
+
 }

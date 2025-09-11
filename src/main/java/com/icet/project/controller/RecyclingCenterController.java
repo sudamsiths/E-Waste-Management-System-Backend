@@ -4,6 +4,7 @@ import com.icet.project.model.dto.Recycling_CenterDTO;
 import com.icet.project.model.entity.Recycling_CenterEntity;
 import com.icet.project.service.Recyclecenter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 @RequestMapping("/recycling-centers")
 @RequiredArgsConstructor
 @CrossOrigin
+@Slf4j
 public class RecyclingCenterController {
 
     final Recyclecenter recyclingCenterService;
@@ -28,6 +30,7 @@ public class RecyclingCenterController {
 
     @PostMapping("add")
     public Recycling_CenterEntity createCenter(@RequestBody Recycling_CenterEntity center) {
+        log.info("Creating new recycling center: " + center.getCenterName());
         return recyclingCenterService.createCenter(center);
     }
 
