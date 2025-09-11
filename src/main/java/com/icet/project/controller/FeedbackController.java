@@ -4,6 +4,7 @@ import com.icet.project.model.dto.FeedbackDTO;
 import com.icet.project.model.entity.FeedbackEntity;
 import com.icet.project.service.FeedbackService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @RequestMapping("/feedback")
 @RequiredArgsConstructor
 @CrossOrigin
+@Slf4j
 public class FeedbackController {
 
     final FeedbackService feedbackService;
@@ -29,6 +31,7 @@ public class FeedbackController {
 
     @PostMapping("/add")
     public FeedbackEntity createFeedback(@RequestBody FeedbackEntity feedback) {
+        log.info("Creating feedback: " + feedback);
         return feedbackService.createFeedback(feedback);
     }
 
@@ -41,8 +44,4 @@ public class FeedbackController {
     public List<FeedbackDTO> getTypeFeedback(@PathVariable("feedbackType") String feedbackType ){
         return feedbackService.getFeedbackByType(feedbackType);
     }
-//    @GetMapping("/search/By-FeedbackTypeAndStatus/{feedbackType}/{status}")
-//    public List<FeedbackDTO> getTypeAndStatusFeedback(@PathVariable("feedbackType") String feedbackType, @PathVariable("status") String status) {
-//        return feedbackService.getFeedbackByTypeAndStatus(feedbackType, status);
-//    }
 }
