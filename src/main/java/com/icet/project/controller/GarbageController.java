@@ -113,6 +113,15 @@ public class GarbageController {
         garbageService.UpdateGarbageDetails(id, garbageDetailsDTO);
     }
 
+    @PutMapping("/assignAgent/{id}")
+    public void assignAgentToGarbage(@PathVariable Long id, @RequestBody Map<String, String> request) {
+        String agentName = request.get("AgentName");
+        if (agentName == null || agentName.trim().isEmpty()) {
+            throw new RuntimeException("AgentName is required");
+        }
+        garbageService.assignAgentToGarbage(id, agentName);
+    }
+
     @GetMapping("/byStatus/{status}")
     public List<Garbage_DetailsEntity> getGarbageByStatus(@PathVariable Status status) {
         return garbageService.getGarbageByStatus(status);

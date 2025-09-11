@@ -172,4 +172,12 @@ public class GarbageServiceImpl implements GarbageService {
         updatedGarbage.setId(id);
         garbageRepository.save(updatedGarbage);
     }
+
+    @Override
+    public void assignAgentToGarbage(Long id, String agentName) {
+        Garbage_DetailsEntity garbage = garbageRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Garbage with id " + id + " does not exist."));
+        garbage.setAgentName(agentName);
+        garbageRepository.save(garbage);
+    }
 }

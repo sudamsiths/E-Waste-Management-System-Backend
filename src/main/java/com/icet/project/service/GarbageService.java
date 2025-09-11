@@ -23,4 +23,7 @@ public interface GarbageService {
     Map<Status, Long> getCountByStatus();
     List<Garbage_DetailsEntity> getGarbageByUserName(String userName);
     void UpdateGarbageDetails(Long id, Garbage_DetailsDTO garbageDetailsDTO);
+
+    void assignAgentToGarbage(Long id, String agentName);
+
 }
