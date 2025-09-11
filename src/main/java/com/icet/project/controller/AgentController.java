@@ -59,15 +59,4 @@ public class AgentController {
     public List<AgentDTO> getAgentsByStatus(@PathVariable ("status") String status) {
         return agentService.getAgentsByStatus(status);
     }
-//    @GetMapping("/agent-tickets/{agentId}")
-//    public List<GarbageTicketDTO> getAssignedTickets(@PathVariable Long agentId) {
-//        return garbageTicketService.getTicketsByAgent(agentId);
-//    }
-//
-//    @PostMapping("/ticket/{id}/collect")
-//    public ResponseEntity<String> collectTicket(@PathVariable Long id) {
-//        garbageTicketService.markAsCollected(id);
-//        return ResponseEntity.ok("Ticket marked as collected");
-//    }
-
 }

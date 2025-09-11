@@ -13,6 +13,5 @@ public interface AgentRepository extends JpaRepository<AgentEntity , Long> {
 
     Optional<AgentEntity> findByFullName(String fullName);
     List<AgentEntity> findByassignBranch(String assignBranch);
-
     List<AgentEntity> findByStatus(Status status);
 }

@@ -24,12 +24,4 @@ public class AgentEntity {
     private Status status;
     private Integer contactNo;
 
-//    @OneToMany(mappedBy = "assignedAgent", cascade = CascadeType.ALL)
-//    private List<Garbage_DetailsEntity> assignedGarbage;
-//
-//    @OneToMany(mappedBy = "recipientAgent", cascade = CascadeType.ALL)
-//    private List<NotificationEntity> notifications;
-
-
-    
 }
