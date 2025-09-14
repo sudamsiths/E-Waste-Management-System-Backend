@@ -29,9 +29,7 @@ public class RecyclingCenterServiceImpl implements Recyclecenter {
     }
 
     public Recycling_CenterEntity createCenter(Recycling_CenterEntity center) {
-        if (recyclingCenterRepository.findBycenterName(center.getCenterName()).isPresent()) {
-            throw new RuntimeException("Recycling Center with name " + center.getCenterName() + " already exists.");
-        }
+
         if (center.getEmail() != null && recyclingCenterRepository.findByEmail(center.getEmail()).isPresent()) {
             throw new RuntimeException("Recycling Center with email " + center.getEmail() + " already exists.");
         }
