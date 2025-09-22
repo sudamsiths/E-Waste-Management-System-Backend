@@ -165,4 +165,9 @@ public class UserController {
                     .body(Map.of("message", "Deletion failed: " + ex.getMessage()));
         }
     }
+
+    @PutMapping("/change-username-password/{id}" )
+    public void changeUsernameAndPassword(@RequestBody String username , @RequestBody String password){
+        userService.updateUserNameAndPassword(username,password);
+    }
 }

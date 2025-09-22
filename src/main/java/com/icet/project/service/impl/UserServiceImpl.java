@@ -7,6 +7,7 @@ import com.icet.project.service.JWTService;
 import com.icet.project.service.UserService;
 import com.icet.project.utill.Role;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     private final JWTService jwtService;
@@ -171,6 +173,34 @@ public class UserServiceImpl implements UserService {
             System.err.println("Error deleting user: " + ex.getMessage());
             ex.printStackTrace();
             throw new RuntimeException("Failed to delete user: " + ex.getMessage());
+        }
+    }
+
+    @Override
+    public void updateUserNameAndPassword(String username, String password) {
+        try {
+            log.info("Updating username and password for user: " + username);
+
+            if (username == null || username.trim().isEmpty()) {
+                throw new IllegalArgumentException("Username cannot be null or empty");
+            }
+            if (password == null || password.trim().isEmpty()) {
+                throw new IllegalArgumentException("Password cannot be null or empty");
+            }
+
+            User user = userRepository.findByUsername(username.trim());
+            if (user == null) {
+                throw new RuntimeException("User not found with username: " + username);
+            }
+
+            user.setPassword(passwordEncoder.encode(password.trim()));
+            userRepository.save(user);
+            log.info("Password updated successfully for user: " + username);
+
+        } catch (Exception ex) {
+            System.err.println("Error updating password: " + ex.getMessage());
+            ex.printStackTrace();
+            throw new RuntimeException("Failed to update password: " + ex.getMessage());
         }
     }
 
