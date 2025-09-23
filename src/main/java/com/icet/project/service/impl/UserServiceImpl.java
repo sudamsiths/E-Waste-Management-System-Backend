@@ -177,30 +177,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserNameAndPassword(String username, String password) {
+    public void updateUserNameAndPassword(Long id, String newUsername, String newPassword) {
         try {
-            log.info("Updating username and password for user: " + username);
+            log.info("Updating credentials for user id: {}", id);
+            User user = userRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
 
-            if (username == null || username.trim().isEmpty()) {
-                throw new IllegalArgumentException("Username cannot be null or empty");
-            }
-            if (password == null || password.trim().isEmpty()) {
-                throw new IllegalArgumentException("Password cannot be null or empty");
-            }
-
-            User user = userRepository.findByUsername(username.trim());
-            if (user == null) {
-                throw new RuntimeException("User not found with username: " + username);
+            // Update username if provided and different
+            if (newUsername != null && !newUsername.trim().isEmpty() &&
+                    !newUsername.trim().equals(user.getUsername())) {
+                User existing = userRepository.findByUsername(newUsername.trim());
+                if (existing != null && !existing.getUserId().equals(id)) {
+                    throw new IllegalArgumentException("Username already exists");
+                }
+                user.setUsername(newUsername.trim());
             }
 
-            user.setPassword(passwordEncoder.encode(password.trim()));
+            // Update password if provided
+            if (newPassword != null && !newPassword.trim().isEmpty()) {
+                user.setPassword(passwordEncoder.encode(newPassword.trim()));
+            }
+
             userRepository.save(user);
-            log.info("Password updated successfully for user: " + username);
-
-        } catch (Exception ex) {
-            System.err.println("Error updating password: " + ex.getMessage());
-            ex.printStackTrace();
-            throw new RuntimeException("Failed to update password: " + ex.getMessage());
+            log.info("Credentials updated for user id: {}", id);
+        } catch (Exception e) {
+            log.error("Failed to update credentials: {}", e.getMessage());
+            throw new RuntimeException("Failed to update credentials: " + e.getMessage());
         }
     }
 

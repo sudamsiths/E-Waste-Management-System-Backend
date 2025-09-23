@@ -166,8 +166,9 @@ public class UserController {
         }
     }
 
-    @PutMapping("/change-username-password/{id}" )
-    public void changeUsernameAndPassword(@RequestBody String username , @RequestBody String password){
-        userService.updateUserNameAndPassword(username,password);
+    @PutMapping("/update/credentials/{id}")
+    public ResponseEntity<?> updateCredentials(@PathVariable Long id, @RequestBody UserDTO body) {
+        userService.updateUserNameAndPassword(id, body.getUsername(), body.getPassword());
+        return ResponseEntity.ok(Map.of("message", "Credentials updated"));
     }
 }

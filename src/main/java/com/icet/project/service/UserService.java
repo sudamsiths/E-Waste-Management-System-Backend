@@ -17,5 +17,5 @@ public interface UserService {
     User findByUsername(String username);
     User updateUser(UserDTO userUpdateDTO);
     void deleteUser(String username);
-    void updateUserNameAndPassword(String username, String password);
+    void updateUserNameAndPassword(Long id, String newUsername, String newPassword);
 }
