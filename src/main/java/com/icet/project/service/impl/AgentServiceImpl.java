@@ -8,6 +8,7 @@ import com.icet.project.utill.Status;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,9 +21,9 @@ import java.util.stream.Collectors;
 
 public class AgentServiceImpl implements AgentService {
 
-     final AgentRepository agentRepository;
-
-     final ModelMapper modelMapper;
+     private final AgentRepository agentRepository;
+     private final ModelMapper modelMapper;
+     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public List<AgentDTO> getAllAgents(AgentDTO agentDTO ) {
         List<AgentEntity> all = agentRepository.findAll();
@@ -36,10 +37,11 @@ public class AgentServiceImpl implements AgentService {
 
 
     public AgentDTO createAgent(AgentEntity agent) {
-        AgentEntity agentEntity = modelMapper.map(agent, AgentEntity.class);
-        agentEntity = agentRepository.save(agentEntity);
-        return modelMapper.map(agentEntity, AgentDTO.class);
+        String hashedPassword = bCryptPasswordEncoder.encode(agent.getPassword());
+        agent.setPassword(hashedPassword);
 
+        AgentEntity savedAgent = agentRepository.save(agent);
+        return modelMapper.map(savedAgent, AgentDTO.class);
     }
 
     public void deleteAgent(Long id) {
@@ -87,6 +89,24 @@ public class AgentServiceImpl implements AgentService {
             names.add(agentEntity.getFullName());
         }
         return names;
+    }
+
+    @Override
+    public List<AgentDTO> loginAgent(String email, String password) {
+        List<AgentEntity> all = agentRepository.findAll();
+        if (all.isEmpty()){
+            throw new RuntimeException("No agents found in the system.");
+        }else {
+            System.out.println("Total agents found: " + all.size());
+        }
+        List<AgentDTO> agentDTOS = new ArrayList<>();
+        for (AgentEntity agentEntity : all) {
+            if (agentEntity.getEmail().equals(email) && bCryptPasswordEncoder.matches(password, agentEntity.getPassword())) {
+                AgentDTO map = modelMapper.map(agentEntity, AgentDTO.class);
+                agentDTOS.add(map);
+            }
+        }
+        return agentDTOS;
     }
 
     public List<AgentDTO> getAgentById(String fullName) {

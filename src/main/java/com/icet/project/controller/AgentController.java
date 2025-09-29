@@ -39,6 +39,11 @@ public class AgentController {
         return agentService.createAgent(agent);
     }
 
+    @PostMapping("/login")
+    public List<AgentDTO>loginAgent(@RequestBody AgentDTO agentDTO){
+        return  agentService.loginAgent(agentDTO.getEmail(), agentDTO.getPassword());
+    }
+
     @DeleteMapping("/delete/{id}")
     public void deleteAgent(@PathVariable Long id) {
         agentService.deleteAgent(id);

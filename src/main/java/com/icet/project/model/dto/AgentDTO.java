@@ -14,7 +14,9 @@ public class AgentDTO {
     private Long agentId;
     private String fullName;
     private String email;
+    private String password;
     private String assignBranch;
     private Status status;
     private String contactNo;
+    private String address;
 }

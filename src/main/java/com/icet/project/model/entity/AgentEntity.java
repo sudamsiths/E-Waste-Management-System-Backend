@@ -19,9 +19,11 @@ public class AgentEntity {
     private Long agentId;
     private String fullName;
     private String email;
+    private String password;
     private String assignBranch;
     @Enumerated(EnumType.STRING)
     private Status status;
     private Integer contactNo;
+    private String address;
 
 }

@@ -14,4 +14,5 @@ public interface AgentService {
     List<AgentDTO> getAgentsByBranch(String assignBranch);
     List<AgentDTO> getAgentsByStatus(String status);
     List<String> getAllAgentsNames();
+    List<AgentDTO> loginAgent(String email, String password);
 }
