@@ -1,0 +1,258 @@
+.what-we-do {
+  margin-top: 100px;
+  padding-left: 100px;
+  padding-right: 100px;           /* make padding symmetric */
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;                  /* center the inner container */
+  justify-content: center;
+}
+
+.container {
+  display: flex;
+  gap: 60px;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.left-section {
+  flex: 0 0 auto;
+  max-width: 500px;
+}
+
+.right-section {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end; 
+  align-items: flex-start;   
+  padding-right: 0;        
+}
+
+.description {
+  color: #666;
+  line-height: 1.6;
+  margin: 20px 0;
+}
+
+.service-card {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease;
+  border-radius: 12px;
+  background: #fff;
+  width: 100%;
+  height: 100%;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+}
+
+.service-card.left {
+  text-align: left;
+}
+
+.service-card-icon {
+  margin-bottom: 10px;
+}
+
+.service-card-title {
+  font-weight: 600;
+  margin: 0 0 8px;
+  font-size: 18px;
+  color: #1a1a1a;
+}
+
+.service-card-description {
+  margin: 0;
+  color: #666;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  width: 100%;
+  max-width: 650px; /* Control grid width */
+  align-items: start;
+}
+
+/* Extra Small Mobile (≤374px) */
+@media (max-width: 374px) {
+  .what-we-do {
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-top: -400px;
+    
+  }
+  .container {
+    flex-direction: column;
+    gap: 30px;
+  }
+  .right-section {
+    justify-content: center;
+  }
+  .services-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    max-width: 100%;
+  }
+  .service-card {
+    padding: 16px;
+        
+  }
+}
+
+/* Small Mobile (375px - 479px) */
+@media (min-width: 375px) and (max-width: 479px) {
+  .what-we-do {
+    padding-left: 16px;
+    padding-right: 16px;
+    margin-top: -400px;
+  }
+  .container {
+    flex-direction: column;
+    gap: 30px;
+  }
+  .right-section {
+    justify-content: center;
+  }
+  .services-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    max-width: 100%;
+  }
+  .service-card {
+    padding: 18px;
+  }
+}
+
+/* Medium Mobile (480px - 639px) */
+@media (min-width: 480px) and (max-width: 639px) {
+  .what-we-do {
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: -300px;
+  }
+  .container {
+    flex-direction: column;
+    gap: 30px;
+  }
+  .right-section {
+    justify-content: center;
+  }
+  .services-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    max-width: 100%;
+  }
+  .service-card {
+    padding: 20px;
+  }
+}
+
+/* Tablet Portrait (640px - 767px) - MISSING BREAKPOINT ADDED */
+@media (min-width: 640px) and (max-width: 767px) {
+  .what-we-do {
+    padding-left: 24px;
+    padding-right: 24px;
+    margin-top: -150px;
+  }
+  .container {
+    flex-direction: column;
+    gap: 35px;
+  }
+  .right-section {
+    justify-content: center;
+  }
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    max-width: 100%;
+  }
+  .service-card {
+    padding: 18px;
+  }
+}
+
+/* Tablet (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .what-we-do {
+    padding-left: 32px;
+    padding-right: 32px;
+    margin-top: -100px;
+  }
+  .container {
+    flex-direction: column;
+    gap: 40px;
+  }
+  .right-section {
+    justify-content: center;
+  }
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    max-width: 100%;
+  }
+}
+
+/* Desktop (1024px - 1279px) */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .what-we-do {
+    padding-left: 60px;
+    padding-right: 60px;
+  }
+  .container {
+    display: flex;
+    flex-direction: row;
+    gap: 60px;
+  }
+  .left-section {
+    max-width: 450px;
+  }
+  .right-section {
+    justify-content: flex-end; /* Right align on desktop */
+  }
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    max-width: 600px;
+  }
+}
+
+/* Large Desktop (1280px - 1439px) */
+@media (min-width: 1280px) and (max-width: 1439px) {
+  .what-we-do {
+    padding-left: 88px;
+    padding-right: 88px;
+  }
+  .container {
+    gap: 80px;
+  }
+  .services-grid {
+    gap: 24px;
+    max-width: 650px;
+  }
+}
+
+/* Extra Large Desktop (≥1440px) */
+@media (min-width: 1440px) {
+  .what-we-do {
+    padding-left: 100px;
+    padding-right: 100px;
+  }
+  .container {
+    gap: 100px;
+  }
+  .services-grid {
+    gap: 26px;
+    max-width: 700px;
+  }
+}
